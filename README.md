@@ -2,9 +2,11 @@
 
 Spring Boot REST API for Common Admin Management (User, Code, Menu, Role)
 
----
+### ⚙️ Setting
 
-## Tech
+1`.env` 파일 루트 경로에 생성 후 DB 정보 입력
+
+### Tech
 - Java 21
 - Spring Boot 3.1.x
 - MyBatis
@@ -12,9 +14,7 @@ Spring Boot REST API for Common Admin Management (User, Code, Menu, Role)
 - Gradle
 - Lombok
 
----
-
-## API List
+### API List
 
 - [ ] 공통 코드 그룹/코드 관리
 - [ ] 메뉴 트리 구조 관리
