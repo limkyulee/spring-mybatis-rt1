@@ -5,7 +5,7 @@ Spring Boot REST API for Common Admin Management (User, Code, Menu, Role)
 ---
 
 ## Tech
-- Java 17
+- Java 21
 - Spring Boot 3.1.x
 - MyBatis
 - MySQL
