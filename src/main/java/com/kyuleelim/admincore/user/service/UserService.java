@@ -2,6 +2,7 @@ package com.kyuleelim.admincore.user.service;
 
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.SearchCondition;
+import com.kyuleelim.admincore.user.dto.UserRequest;
 import com.kyuleelim.admincore.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,8 @@ public class UserService {
     }
 
     // 사용자 업데이트
-    public void updateUser(User user, Long id) {
-        userMapper.updateUser(user, id);
+    public void updateUser(Long id, UserRequest user) {
+        userMapper.updateUser(id, user);
     }
 
     // 사용자 삭제

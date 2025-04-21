@@ -3,13 +3,14 @@ package com.kyuleelim.admincore.user.controller;
 import com.kyuleelim.admincore.common.dto.PageResponse;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.SearchCondition;
+import com.kyuleelim.admincore.user.dto.UserRequest;
 import com.kyuleelim.admincore.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -59,8 +60,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/update/{id}")
-    public void updaetUser(@PathVariable Long id, @RequestBody User user) {
-        userService.updateUser(user, id);
+    public void updateUser(@PathVariable Long id, @RequestBody @Validated UserRequest user) {
+        userService.updateUser(id, user);
     }
 
     /**
@@ -69,7 +70,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/delete/{id}")
-    public void deleteUser(@RequestParam Long id) {
+    public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
     }
 }

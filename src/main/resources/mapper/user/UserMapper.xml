@@ -23,25 +23,24 @@
         )
     </insert>
     
-    <update id="updateUser">
+    <update id="updateUser" parameterType="com.kyuleelim.admincore.user.dto.UserRequest">
         UPDATE user
         <set>
             <trim suffixOverrides=",">
-                <if test="username !=null">
+                <if test="user.username !=null">
                     username = #{user.username},
                 </if>
-                <if test="password != null">
+                <if test="user.password != null">
                     password = #{user.password},
                 </if>
-                <if test="email != null">
+                <if test="user.email != null">
                     email = #{user.email},
                 </if>
-                <if test="useYn != null">
+                <if test="user.useYn != null">
                     use_yn = #{user.useYn},
                 </if>
+                updated_at = NOW()
             </trim>
-
-            updated_at = NOW()
         </set>
         WHERE id = #{id}
     </update>
@@ -67,11 +66,11 @@
             use_yn = 'Y'
             <if test="searchType != null and keyword != null and keyword != ''">
                 <choose>
-                    <when test="searchType == 'username">
-                        AND username LIKE CONCAT('%', #{keyword}. '%')
+                    <when test="searchType == 'username'">
+                        AND username LIKE CONCAT('%', #{keyword}, '%')
                     </when>
-                    <when test="searchType == 'email">
-                        AND email LIKE CONCAT('%', #{keyword}. '%')
+                    <when test="searchType == 'email'">
+                        AND email LIKE CONCAT('%', #{keyword}, '%')
                     </when>
                 </choose>
             </if>
