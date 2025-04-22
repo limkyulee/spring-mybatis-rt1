@@ -6,12 +6,9 @@ import com.kyuleelim.admincore.user.dto.SearchCondition;
 import com.kyuleelim.admincore.user.dto.UserRequest;
 import com.kyuleelim.admincore.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +24,7 @@ public class UserController {
      * @param searchCondition
      * @return List<User>
      */
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/list")
     public PageResponse<User> findAll(@RequestBody SearchCondition searchCondition) {
         List<User> users = userService.findAll(searchCondition);
@@ -39,6 +37,7 @@ public class UserController {
      * @param id
      * @return User
      */
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/detail/{id}")
     public User findById(@PathVariable Long id) {
         return userService.findById(id);
@@ -49,6 +48,7 @@ public class UserController {
      * @param user
      * @return
      */
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/insert")
     public void insertUser(@RequestBody User user) {
         userService.insertUser(user);
@@ -59,6 +59,7 @@ public class UserController {
      * @param user, id
      * @return
      */
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/update/{id}")
     public void updateUser(@PathVariable Long id, @RequestBody @Validated UserRequest user) {
         userService.updateUser(id, user);
@@ -69,6 +70,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
