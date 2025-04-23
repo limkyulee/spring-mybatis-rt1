@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Data
 @NoArgsConstructor
@@ -16,11 +17,11 @@ public class CmmResponse<T> {
     private String message;
     private T body;
 
-    public static <T> CmmResponse<T> success(T body) {
+    public static <T> CmmResponse<T> ok(HttpStatus status, T body) {
         return CmmResponse.<T>builder()
-                .httpStatusCode(200)
-                .code("20000000")
-                .message("정상 처리 되었습니다.")
+                .httpStatusCode(status.value())
+                .code(status.value() + "00000")
+                .message(status.getReasonPhrase())
                 .body(body)
                 .build();
     }

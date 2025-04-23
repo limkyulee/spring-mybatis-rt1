@@ -2,14 +2,18 @@ package com.kyuleelim.admincore.user.controller;
 
 import com.kyuleelim.admincore.common.dto.CmmResponse;
 import com.kyuleelim.admincore.common.dto.PageResponse;
+import com.kyuleelim.admincore.common.utils.ResponseUtils;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.SearchCondition;
 import com.kyuleelim.admincore.user.dto.UserRequest;
 import com.kyuleelim.admincore.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 /**
  * @author limkyulee
@@ -28,36 +32,38 @@ public class UserController {
      * @param searchCondition
      * @return List<User>
      */
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/list")
-    public CmmResponse<PageResponse<User>> findAll(@RequestBody SearchCondition searchCondition) {
+    public ResponseEntity<CmmResponse<PageResponse<User>>> findAll(@RequestBody SearchCondition searchCondition) {
         PageResponse<User> result = userService.findAll(searchCondition);
 
-        return CmmResponse.success(result);
+        return ResponseUtils.ok(result);
     }
 
     /**
-     * 사용자 상세 조회
+     * @method 사용자 상세 조회
      * @param id
      * @return User
      */
     @PostMapping("/detail/{id}")
-    public User findById(@PathVariable Long id) {
-        return userService.findById(id);
+    public CmmResponse<User> findById(@PathVariable Long id) {
+        User result = userService.findById(id);
+        return CmmResponse.ok(HttpStatus.OK, result);
     }
 
     /**
-     * 사용자 등록
+     * @method 사용자 등록
      * @param user
      * @return
      */
+
+    // TODO : validaion
     @PostMapping("/insert")
     public void insertUser(@RequestBody User user) {
         userService.insertUser(user);
     }
 
     /**
-     * 사용자 업데이트
+     * @method 사용자 업데이트
      * @param user, id
      * @return
      */
