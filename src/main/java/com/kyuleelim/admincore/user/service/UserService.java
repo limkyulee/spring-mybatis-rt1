@@ -1,10 +1,12 @@
 package com.kyuleelim.admincore.user.service;
 
+import com.kyuleelim.admincore.common.dto.PageResponse;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.SearchCondition;
 import com.kyuleelim.admincore.user.dto.UserRequest;
 import com.kyuleelim.admincore.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +18,14 @@ public class UserService {
     private final UserMapper userMapper;
 
     // 사용자 목록 조회
-    public List<User> findAll(SearchCondition searchCondition) {
-        return userMapper.findAll(searchCondition);
+    public PageResponse<User> findAll(SearchCondition searchCondition) {
+        List<User> userList = userMapper.findAll(searchCondition);
+        int totalCount = userMapper.countAll(searchCondition);
+        return new PageResponse<>(userList, totalCount, searchCondition.getCurrentPage(), searchCondition.getLimit());
     }
 
     // 전체 사용자 수 조회
-    public Integer countAll(SearchCondition searchCondition) {
+    private Integer countAll(SearchCondition searchCondition) {
         return userMapper.countAll(searchCondition);
     }
 

@@ -1,5 +1,6 @@
 package com.kyuleelim.admincore.user.controller;
 
+import com.kyuleelim.admincore.common.dto.CmmResponse;
 import com.kyuleelim.admincore.common.dto.PageResponse;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.SearchCondition;
@@ -10,7 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+/**
+ * @author limkyulee
+ * @version 0.1
+ */
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,16 +24,16 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * 사용자 목록 조회
+     * @method 사용사 목록 조회
      * @param searchCondition
      * @return List<User>
      */
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/list")
-    public PageResponse<User> findAll(@RequestBody SearchCondition searchCondition) {
-        List<User> users = userService.findAll(searchCondition);
-        int totalCount = userService.countAll(searchCondition);
-        return new PageResponse<>(users, totalCount, searchCondition.getCurrentPage(), searchCondition.getLimit());
+    public CmmResponse<PageResponse<User>> findAll(@RequestBody SearchCondition searchCondition) {
+        PageResponse<User> result = userService.findAll(searchCondition);
+
+        return CmmResponse.success(result);
     }
 
     /**
@@ -37,7 +41,6 @@ public class UserController {
      * @param id
      * @return User
      */
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/detail/{id}")
     public User findById(@PathVariable Long id) {
         return userService.findById(id);
@@ -48,7 +51,6 @@ public class UserController {
      * @param user
      * @return
      */
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/insert")
     public void insertUser(@RequestBody User user) {
         userService.insertUser(user);
@@ -59,7 +61,6 @@ public class UserController {
      * @param user, id
      * @return
      */
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/update/{id}")
     public void updateUser(@PathVariable Long id, @RequestBody @Validated UserRequest user) {
         userService.updateUser(id, user);
@@ -70,7 +71,6 @@ public class UserController {
      * @param id
      * @return
      */
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
