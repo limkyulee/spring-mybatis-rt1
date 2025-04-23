@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 /**
  * @author limkyulee
@@ -73,7 +72,7 @@ public class UserController {
     }
 
     /**
-     * 사용자 삭제
+     * @method 사용자 삭제
      * @param id
      * @return
      */
