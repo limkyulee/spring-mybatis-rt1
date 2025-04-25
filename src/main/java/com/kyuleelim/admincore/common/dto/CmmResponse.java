@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class CmmResponse<T> {
     private int httpStatusCode;
     private String code;

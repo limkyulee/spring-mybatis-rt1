@@ -1,7 +1,7 @@
 -- ROLE
--- INSERT INTO role (role_name, description) VALUES
---     ('ADMIN', 'System Administrator'),
---     ('USER', 'Regular User');
+INSERT INTO role (role_name,description) VALUES
+    ('ADMIN', 'System Administrator'),
+    ('USER', 'Regular User');
 
 -- USER
 INSERT INTO user (username, password, name, email, use_yn) VALUES
@@ -9,8 +9,8 @@ INSERT INTO user (username, password, name, email, use_yn) VALUES
     ('testuser', 'test1234', '테스트 사용자', 'user@example.com', 'Y');
 
 -- USER_ROLE
--- INSERT INTO user_role (user_id, role_id)
--- SELECT u.id, r.id FROM user u, role r WHERE u.username = 'admin' AND r.role_name = 'ADMIN';
+INSERT INTO user_role (user_id, role_id)
+SELECT u.id, r.id FROM user u, role r WHERE u.username = 'admin' AND r.role_name = 'ADMIN';
 --
 -- -- MENU
 -- INSERT INTO menu (name, parent_id, path, sort_order, use_yn) VALUES

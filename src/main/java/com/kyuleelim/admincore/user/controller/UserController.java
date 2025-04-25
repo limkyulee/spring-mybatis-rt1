@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author limkyulee
- * @version 0.1
+ * @version 0.
+ * @see {사용자관리}
  */
 
 @RestController
@@ -27,7 +28,8 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * @method 사용사 목록 조회
+     * @method findAll
+     * @name 사용사 목록 조회
      * @param searchCondition
      * @return List<User>
      */
@@ -39,7 +41,8 @@ public class UserController {
     }
 
     /**
-     * @method 사용자 상세 조회
+     * @method findById
+     * @name 사용자 상세 조회
      * @param id
      * @return User
      */
@@ -50,7 +53,8 @@ public class UserController {
     }
 
     /**
-     * @method 사용자 등록
+     * @method insertUser
+     * @name 사용자 등록
      * @param user
      * @return
      */
@@ -62,7 +66,8 @@ public class UserController {
     }
 
     /**
-     * @method 사용자 업데이트
+     * @method updateUser
+     * @name 사용자 업데이트
      * @param user, id
      * @return
      */
@@ -72,7 +77,8 @@ public class UserController {
     }
 
     /**
-     * @method 사용자 삭제
+     * @method deleteUser
+     * @name 사용자 삭제
      * @param id
      * @return
      */
