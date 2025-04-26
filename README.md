@@ -16,9 +16,7 @@ Spring Boot REST API for Common Admin Management (User, Code, Menu, Role)
 
 ### API List
 
-- [ ] 공통 코드 그룹/코드 관리
-- [ ] 메뉴 트리 구조 관리
+- [ ] 회원가입
+- [ ] 로그인/인증
 - [ ] 사용자/권한 등록 및 매핑
-- [ ] 메뉴-권한 매핑
-- [ ] 로그인/인증 (추후 추가 가능)
 

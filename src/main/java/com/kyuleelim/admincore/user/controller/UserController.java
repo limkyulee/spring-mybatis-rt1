@@ -1,7 +1,8 @@
 package com.kyuleelim.admincore.user.controller;
 
-import com.kyuleelim.admincore.common.dto.CmmResponse;
-import com.kyuleelim.admincore.common.dto.PageResponse;
+import com.kyuleelim.admincore.common.domain.CmmResponse;
+import com.kyuleelim.admincore.common.domain.CmmResponseEntity;
+import com.kyuleelim.admincore.common.domain.PageResponse;
 import com.kyuleelim.admincore.common.utils.ResponseUtils;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.SearchCondition;
@@ -37,7 +38,7 @@ public class UserController {
     public ResponseEntity<CmmResponse<PageResponse<User>>> findAll(@RequestBody SearchCondition searchCondition) {
         PageResponse<User> result = userService.findAll(searchCondition);
 
-        return ResponseUtils.ok(result);
+        return new CmmResponseEntity<>(new CmmResponse<>(result), HttpStatus.OK);
     }
 
     /**
@@ -47,9 +48,9 @@ public class UserController {
      * @return User
      */
     @PostMapping("/detail/{id}")
-    public CmmResponse<User> findById(@PathVariable Long id) {
+    public ResponseEntity<CmmResponse<User>> findById(@PathVariable Long id) {
         User result = userService.findById(id);
-        return CmmResponse.ok(HttpStatus.OK, result);
+        return new CmmResponseEntity<>(new CmmResponse<>(result), HttpStatus.OK);
     }
 
     /**

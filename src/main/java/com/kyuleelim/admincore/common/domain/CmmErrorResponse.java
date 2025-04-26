@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.common.dto;
+package com.kyuleelim.admincore.common.domain;
 
 import com.kyuleelim.admincore.common.enums.ErrorCode;
 import lombok.AllArgsConstructor;

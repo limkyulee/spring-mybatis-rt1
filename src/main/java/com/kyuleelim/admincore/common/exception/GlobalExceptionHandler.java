@@ -1,6 +1,6 @@
 package com.kyuleelim.admincore.common.exception;
 
-import com.kyuleelim.admincore.common.dto.CmmErrorResponse;
+import com.kyuleelim.admincore.common.domain.CmmErrorResponse;
 import com.kyuleelim.admincore.common.enums.ErrorCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

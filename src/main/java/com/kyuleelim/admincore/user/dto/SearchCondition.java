@@ -1,16 +1,10 @@
 package com.kyuleelim.admincore.user.dto;
 
+import com.kyuleelim.admincore.common.domain.CmmPageRequest;
 import lombok.Data;
 
 @Data
-public class SearchCondition {
+public class SearchCondition extends CmmPageRequest {
     private String keyword;
-    private String searchType;
-
-    private Integer currentPage = 1;
-    private Integer limit = 10;
-
-    public int getOffset(){
-        return (currentPage - 1) * limit;
-    }
+    private String searchCondition;
 }

@@ -1,11 +1,12 @@
 package com.kyuleelim.admincore.user.dto;
 
+import com.kyuleelim.admincore.common.domain.CmmPageRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class UserRequest {
+public class UserRequest extends CmmPageRequest {
     @NotBlank(message="사용자 이름은 필수입니다.")
     private String username;
 
