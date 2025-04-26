@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 public class SearchCondition extends CmmPageRequest {
     private String keyword;
-    private String searchCondition;
+    private String searchType;
 }

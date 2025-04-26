@@ -18,7 +18,7 @@ public class CmmPageRequest {
     private Integer limit = CmmConstant.DEFAULT_LIMIT;
 
     @JsonInclude
-    public Integer getRowStart() {
+    public Integer getOffset() {
         return (Optional.ofNullable(currentPage).orElse(CmmConstant.DEFAULT_CURRENT_PAGE) - 1) * Optional.ofNullable(limit).orElse(CmmConstant.DEFAULT_LIMIT);
     }
 }
