@@ -12,5 +12,5 @@ public class Member {
     private String username;
     private String email;
     private String password;
-    private Role role = Role.USER;
+    private Role role;
 }

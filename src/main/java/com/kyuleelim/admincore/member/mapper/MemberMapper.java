@@ -11,5 +11,4 @@ public interface MemberMapper {
     void save(Member member);
     Optional<Member> findByEmail(String email);
     List<Member> findAll();
-    Member login(String email, String password);
 }

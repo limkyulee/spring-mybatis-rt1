@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kyuleelim.admincore.member.mapper.MemberMapper">
     <!--  회원가입  -->
-    <insert id="save">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO member (
             username,
             password,
@@ -11,11 +11,11 @@
             role
         )
         VALUES (
-                   #{username},
-                   #{password},
-                   #{email},
-                   Role.USER
-               )
+            #{username},
+            #{password},
+            #{email},
+            #{role}
+        )
     </insert>
 
     <!--  로그인을 위한 사용자 조회 -->

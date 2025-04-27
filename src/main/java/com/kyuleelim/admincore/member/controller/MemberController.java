@@ -9,6 +9,7 @@ import com.kyuleelim.admincore.member.dto.MemberLoginReqDto;
 import com.kyuleelim.admincore.member.dto.MemberSaveReqDto;
 import com.kyuleelim.admincore.member.service.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api")
 @AllArgsConstructor
 public class MemberController {
 
@@ -36,7 +38,8 @@ public class MemberController {
      */
     @PostMapping("/join")
     public ResponseEntity<CmmResponse<Member>> join(@RequestBody MemberSaveReqDto memberSaveReqDto) {
-       Member member = memberService.join(memberSaveReqDto);
+       log.info("memberSaveReqDto: {}", memberSaveReqDto);
+        Member member = memberService.join(memberSaveReqDto);
 
        return new CmmResponseEntity<>(new CmmResponse<>(member), HttpStatus.OK);
     }
@@ -65,7 +68,7 @@ public class MemberController {
      * @name 멤버 리스트 조회
      * @return memberList
      */
-    @GetMapping("/list")
+    @GetMapping("/members")
     public ResponseEntity<CmmResponse<List<MemberListResDto>>> getMemberList() {
         List<MemberListResDto> memberList = memberService.findAll();
         return new CmmResponseEntity<>(new CmmResponse<>(memberList), HttpStatus.OK);
