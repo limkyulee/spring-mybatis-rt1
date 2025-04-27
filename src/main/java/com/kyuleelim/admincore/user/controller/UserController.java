@@ -1,8 +1,8 @@
 package com.kyuleelim.admincore.user.controller;
 
-import com.kyuleelim.admincore.common.domain.CmmResponse;
-import com.kyuleelim.admincore.common.domain.CmmResponseEntity;
-import com.kyuleelim.admincore.common.dto.PageResponse;
+import com.kyuleelim.admincore.common.dto.response.CmmResponse;
+import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
+import com.kyuleelim.admincore.common.dto.response.PageResponse;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.SearchCondition;
 import com.kyuleelim.admincore.user.dto.UserRequest;

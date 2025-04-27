@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.common.dto;
+package com.kyuleelim.admincore.common.dto.response;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

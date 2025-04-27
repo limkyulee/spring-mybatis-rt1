@@ -1,6 +1,6 @@
 package com.kyuleelim.admincore.user.service;
 
-import com.kyuleelim.admincore.common.dto.PageResponse;
+import com.kyuleelim.admincore.common.dto.response.PageResponse;
 import com.kyuleelim.admincore.common.enums.ErrorCode;
 import com.kyuleelim.admincore.common.exception.BizException;
 import com.kyuleelim.admincore.user.domain.User;

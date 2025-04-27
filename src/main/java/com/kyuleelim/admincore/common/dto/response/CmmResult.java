@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.common.domain;
+package com.kyuleelim.admincore.common.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

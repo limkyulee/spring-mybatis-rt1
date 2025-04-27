@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.common.domain;
+package com.kyuleelim.admincore.common.dto.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

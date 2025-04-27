@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.common.domain;
+package com.kyuleelim.admincore.common.dto.response;
 
 import com.kyuleelim.admincore.common.enums.ErrorCode;
 import com.kyuleelim.admincore.common.exception.BizException;

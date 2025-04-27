@@ -1,8 +1,8 @@
 package com.kyuleelim.admincore.member.controller;
 
 import com.kyuleelim.admincore.common.auth.JwtTokenProvider;
-import com.kyuleelim.admincore.common.domain.CmmResponse;
-import com.kyuleelim.admincore.common.domain.CmmResponseEntity;
+import com.kyuleelim.admincore.common.dto.response.CmmResponse;
+import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
 import com.kyuleelim.admincore.member.domain.Member;
 import com.kyuleelim.admincore.member.dto.MemberListResDto;
 import com.kyuleelim.admincore.member.dto.MemberLoginReqDto;

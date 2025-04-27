@@ -1,6 +1,6 @@
 package com.kyuleelim.admincore.common.utils;
 //
-//import com.kyuleelim.admincore.common.domain.CmmResponse;
+//import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
 //
