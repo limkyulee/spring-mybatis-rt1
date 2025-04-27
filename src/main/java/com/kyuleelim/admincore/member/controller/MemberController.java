@@ -71,6 +71,7 @@ public class MemberController {
     @GetMapping("/members")
     public ResponseEntity<CmmResponse<List<MemberListResDto>>> getMemberList() {
         List<MemberListResDto> memberList = memberService.findAll();
+        log.info("memberList: {}", memberList);
         return new CmmResponseEntity<>(new CmmResponse<>(memberList), HttpStatus.OK);
     }
 }

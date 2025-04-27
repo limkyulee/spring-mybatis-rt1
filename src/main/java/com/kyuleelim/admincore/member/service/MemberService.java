@@ -82,6 +82,10 @@ public class MemberService {
         Member member = memberMapper.findByEmail(memberLoginReqDto.getEmail())
                 .orElseThrow(() -> new BizException(ErrorCode.USER_NOT_FOUND));
 
+        log.info("로그인 시도 email: {}", memberLoginReqDto.getEmail());
+        log.info("입력된 비밀번호(plain): {}", memberLoginReqDto.getPassword());
+        log.info("DB에서 읽은 비밀번호(encoded): {}", member.getPassword());
+
         // matches | 자동 암호화
         if(!passwordEncoder.matches(memberLoginReqDto.getPassword(), member.getPassword())){
             throw  new BizException(ErrorCode.WRONG_PASSWORD);
@@ -101,7 +105,10 @@ public class MemberService {
         for (Member member : members) {
             MemberListResDto memberListResDto = new MemberListResDto();
             memberListResDto.setId(member.getId());
+            memberListResDto.setUsername(member.getUsername());
             memberListResDto.setEmail(member.getEmail());
+
+            memberListResDtos.add(memberListResDto);
         }
         return memberListResDtos;
     }
