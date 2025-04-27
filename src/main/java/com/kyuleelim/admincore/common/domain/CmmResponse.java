@@ -2,12 +2,7 @@ package com.kyuleelim.admincore.common.domain;
 
 import com.kyuleelim.admincore.common.enums.ErrorCode;
 import com.kyuleelim.admincore.common.exception.BizException;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

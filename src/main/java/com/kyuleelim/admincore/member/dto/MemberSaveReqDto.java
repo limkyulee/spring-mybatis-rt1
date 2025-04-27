@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.spring.dto;
+package com.kyuleelim.admincore.member.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

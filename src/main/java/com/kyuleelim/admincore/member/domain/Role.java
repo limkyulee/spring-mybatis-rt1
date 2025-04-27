@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.spring.domain;
+package com.kyuleelim.admincore.member.domain;
 
 public enum Role {
     ADMIN, USER

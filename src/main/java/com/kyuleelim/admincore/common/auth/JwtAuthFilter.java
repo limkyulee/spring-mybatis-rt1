@@ -1,4 +1,4 @@
-package com.example.chatserver.common.auth;
+package com.kyuleelim.admincore.common.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,6 +1,6 @@
 package com.kyuleelim.admincore.user.dto;
 
-import com.kyuleelim.admincore.common.domain.CmmPageRequest;
+import com.kyuleelim.admincore.common.dto.CmmPageRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

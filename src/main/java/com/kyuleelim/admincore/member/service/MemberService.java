@@ -1,11 +1,14 @@
-package com.kyuleelim.admincore.spring.service;
+package com.kyuleelim.admincore.member.service;
 
-import com.example.chatserver.member.domain.Member;
-import com.example.chatserver.member.dto.MemberListResDto;
-import com.example.chatserver.member.dto.MemberLoginReqDto;
-import com.example.chatserver.member.dto.MemberSaveReqDto;
-import com.example.chatserver.member.repository.MemberRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.kyuleelim.admincore.common.enums.ErrorCode;
+import com.kyuleelim.admincore.common.exception.BizException;
+import com.kyuleelim.admincore.member.domain.Member;
+import com.kyuleelim.admincore.member.dto.MemberListResDto;
+import com.kyuleelim.admincore.member.dto.MemberLoginReqDto;
+import com.kyuleelim.admincore.member.dto.MemberSaveReqDto;
+import com.kyuleelim.admincore.member.mapper.MemberMapper;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,54 +18,85 @@ import java.util.List;
 
 @Service
 @Transactional
+@AllArgsConstructor
 public class MemberService {
-    private final MemberRepository memberRepository;
+
+    @Autowired
+    private final MemberMapper memberMapper;
+    @Autowired
     private final PasswordEncoder passwordEncoder;
 
-    public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder) {
-        this.memberRepository = memberRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    /**
+     * @method join
+     * @name 회원가입
+     * @param memberSaveReqDto
+     * @return member
+     */
+    public Member join(MemberSaveReqDto memberSaveReqDto) {
+        validateDuplicateEmail(memberSaveReqDto.getEmail());
 
-    public Member create(MemberSaveReqDto memberSaveReqDto) {
-        if(memberRepository.findByEmail(memberSaveReqDto.getEmail()).isPresent()){
-            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
-        }
-
-        Member newMember = Member.builder()
-                .username(memberSaveReqDto.getUsername())
-                .email(memberSaveReqDto.getEmail())
-                .password(passwordEncoder.encode(memberSaveReqDto.getPassword())) // 비밀번호 암호화
-                .build();
-        Member member = memberRepository.save(newMember);
+        Member member = createMember(memberSaveReqDto);
+        memberMapper.save(member);
 
         return member;
     }
 
+    /**
+     * @method validateDuplicateEmail
+     * @name 이메일 중복 검사
+     * @param email
+     */
+    private void validateDuplicateEmail(String email) {
+        memberMapper.findByEmail(email)
+                .ifPresent(m -> {
+                    throw new BizException(ErrorCode.DUPLICATE_EMAIL);
+                });
+    }
+
+    /**
+     * @method createMember
+     * @name 회원가입을 위한 멤버 생성
+     * @param memberSaveReqDto
+     * @return member
+     */
+    private Member createMember(MemberSaveReqDto memberSaveReqDto) {
+        Member member = new Member();
+        member.setEmail(memberSaveReqDto.getEmail());
+        member.setPassword(passwordEncoder.encode(memberSaveReqDto.getPassword()));
+        return member;
+    }
+
+    /**
+     * @method login
+     * @name 로그인
+     * @param memberLoginReqDto
+     * @return member
+     */
     public Member login(MemberLoginReqDto memberLoginReqDto) {
-        Member member = memberRepository.findByEmail(memberLoginReqDto.getEmail()).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+        Member member = memberMapper.findByEmail(memberLoginReqDto.getEmail())
+                .orElseThrow(() -> new BizException(ErrorCode.USER_NOT_FOUND));
 
         // matches | 자동 암호화
         if(!passwordEncoder.matches(memberLoginReqDto.getPassword(), member.getPassword())){
-            throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw  new BizException(ErrorCode.WRONG_PASSWORD);
         }
-
 
         return member;
     }
 
+    /**
+     * @method findAll
+     * @name 회원가입한 멤버 전체 조회
+     * @return memberListResDtos
+     */
     public List<MemberListResDto> findAll() {
-        List<Member> member = memberRepository.findAll();
+        List<Member> members = memberMapper.findAll();
         List<MemberListResDto> memberListResDtos = new ArrayList<>();
-
-        for(Member m : member){
+        for (Member member : members) {
             MemberListResDto memberListResDto = new MemberListResDto();
-            memberListResDto.setId(m.getId());
-            memberListResDto.setUsername(m.getUsername());
-            memberListResDto.setEmail(m.getEmail());
-            memberListResDtos.add(memberListResDto);
+            memberListResDto.setId(member.getId());
+            memberListResDto.setEmail(member.getEmail());
         }
-
         return memberListResDtos;
     }
 }

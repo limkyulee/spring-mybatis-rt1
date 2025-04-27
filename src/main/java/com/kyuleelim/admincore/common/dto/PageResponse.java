@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.common.domain;
+package com.kyuleelim.admincore.common.dto;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

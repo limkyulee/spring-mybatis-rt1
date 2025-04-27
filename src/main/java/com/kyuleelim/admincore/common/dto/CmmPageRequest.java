@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.common.domain;
+package com.kyuleelim.admincore.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kyuleelim.admincore.common.enums.CmmConstant;
