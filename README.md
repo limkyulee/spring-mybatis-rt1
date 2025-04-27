@@ -16,7 +16,7 @@ Spring Boot REST API for Common Admin Management (User, Code, Menu, Role)
 
 ### API List
 
-- [ ] 회원가입
-- [ ] 로그인/인증
+- [X] 회원가입
+- [X] 로그인/JWT 인증
 - [ ] 사용자/권한 등록 및 매핑
 
