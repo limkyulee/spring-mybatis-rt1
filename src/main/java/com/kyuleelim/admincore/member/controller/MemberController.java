@@ -19,6 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author limkyulee
+ * @version 1.0 2025.04.27
+ * @description 회원 관리 (회원가입, 로그인, 전체 조회)
+ */
+
 @Slf4j
 @RestController
 @RequestMapping("/api")

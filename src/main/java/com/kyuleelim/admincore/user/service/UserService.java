@@ -4,8 +4,8 @@ import com.kyuleelim.admincore.common.dto.response.PageResponse;
 import com.kyuleelim.admincore.common.enums.ErrorCode;
 import com.kyuleelim.admincore.common.exception.BizException;
 import com.kyuleelim.admincore.user.domain.User;
-import com.kyuleelim.admincore.user.dto.SearchCondition;
-import com.kyuleelim.admincore.user.dto.UserRequest;
+import com.kyuleelim.admincore.user.dto.UserListReqDto;
+import com.kyuleelim.admincore.user.dto.UserUpdateReqDto;
 import com.kyuleelim.admincore.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -19,25 +19,44 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    // 사용자 목록 조회
-    public PageResponse<User> findAll(SearchCondition searchCondition) {
+    /**
+     * @method findAll
+     * @name 사용자 목록 조회
+     * @param searchCondition
+     * @return PageResponse UserList
+     */
+    public PageResponse<User> findAll(UserListReqDto searchCondition) {
         List<User> userList = userMapper.findAll(searchCondition);
         int totalCount = userMapper.countAll(searchCondition);
         return new PageResponse<>(userList, totalCount, searchCondition.getCurrentPage(), searchCondition.getLimit());
     }
 
-    // 전체 사용자 수 조회
-    private Integer countAll(SearchCondition searchCondition) {
+    /**
+     * @method countAll
+     * @name 사용자 목록 전체 수 조회
+     * @param searchCondition
+     * @return number
+     */
+    private Integer countAll(UserListReqDto searchCondition) {
         return userMapper.countAll(searchCondition);
     }
 
-    // 사용자 상세 조회
+    /**
+     * @method findById
+     * @name 아이디로 사용자 상세 조회
+     * @param id
+     * @return User
+     */
     public User findById(Long id) {
         return userMapper.findById(id)
                 .orElseThrow(() -> new BizException(ErrorCode.USER_NOT_FOUND));
     }
 
-    // 사용자 등록
+    /**
+     * @method insertUser
+     * @name 사용자 등록
+     * @param user
+     */
     public void insertUser(User user) {
         try{
             userMapper.insertUser(user);
@@ -46,8 +65,13 @@ public class UserService {
         }
     }
 
-    // 사용자 업데이트
-    public void updateUser(Long id, UserRequest user) {
+    /**
+     * @method updateUser
+     * @name 사용자 업데이트
+     * @param id
+     * @param user
+     */
+    public void updateUser(Long id, UserUpdateReqDto user) {
         if (userMapper.findById(id).isEmpty()) {
             throw new BizException(ErrorCode.USER_NOT_FOUND);
         }
@@ -59,7 +83,11 @@ public class UserService {
         }
     }
 
-    // 사용자 삭제
+    /**
+     * @method deleteUser
+     * @name 사용자 삭제처리
+     * @param id
+     */
     public void deleteUser(Long id) {
         findById(id);
 
@@ -69,5 +97,4 @@ public class UserService {
             throw new BizException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

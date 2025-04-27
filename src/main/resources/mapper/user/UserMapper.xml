@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kyuleelim.admincore.user.mapper.UserMapper">
-    <insert id="insertUser">
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user (
             username,
             password,
@@ -23,7 +23,7 @@
         )
     </insert>
     
-    <update id="updateUser" parameterType="com.kyuleelim.admincore.user.dto.UserRequest">
+    <update id="updateUser" parameterType="com.kyuleelim.admincore.user.dto.UserUpdateReqDto">
         UPDATE user
         <set>
             <trim suffixOverrides=",">

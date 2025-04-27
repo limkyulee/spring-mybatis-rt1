@@ -1,4 +1,4 @@
-package com.kyuleelim.admincore.common.dto.response;
+package com.kyuleelim.admincore.common.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kyuleelim.admincore.common.enums.CmmConstant;
