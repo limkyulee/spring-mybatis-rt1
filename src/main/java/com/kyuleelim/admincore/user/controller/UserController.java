@@ -7,7 +7,10 @@ import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.UserListReqDto;
 import com.kyuleelim.admincore.user.dto.UserUpdateReqDto;
 import com.kyuleelim.admincore.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,11 +23,12 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
+@Tag(name = "사용자 관리", description = "")
 @RequestMapping("/api/users")
-@RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
     /**
      * @method findAll
@@ -32,6 +36,7 @@ public class UserController {
      * @param userListReqDto
      * @return List<User>
      */
+    @Operation(summary = "사용자관리 목록 조회", description = "사용자관리 목록 조회")
     @PostMapping("/list")
     public ResponseEntity<CmmResponse<PageResponse<User>>> findAll(@RequestBody UserListReqDto userListReqDto) {
         PageResponse<User> result = userService.findAll(userListReqDto);
@@ -45,6 +50,7 @@ public class UserController {
      * @param id
      * @return User
      */
+    @Operation(summary = "사용자관리 상세 조회", description = "사용자관리 상세 조회")
     @PostMapping("/detail/{id}")
     public ResponseEntity<CmmResponse<User>> findById(@PathVariable Long id) {
         User result = userService.findById(id);
@@ -58,6 +64,7 @@ public class UserController {
      * @param user
      * @return
      */
+    @Operation(summary = "사용자관리 등록", description = "사용자관리 등록")
     @PostMapping("/insert")
     public void insertUser(@RequestBody User user) {
         userService.insertUser(user);
@@ -70,6 +77,7 @@ public class UserController {
      * @param userUpdateReqDto
      * @return
      */
+    @Operation(summary = "사용자관리 업데이트", description = "사용자관리 업데이트")
     @PostMapping("/update/{id}")
     public void updateUser(@PathVariable Long id, @RequestBody @Validated UserUpdateReqDto userUpdateReqDto) {
         userService.updateUser(id, userUpdateReqDto);
@@ -81,6 +89,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @Operation(summary = "사용자관리 삭제", description = "사용자관리 삭제")
     @PostMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

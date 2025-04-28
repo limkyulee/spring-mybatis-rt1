@@ -8,8 +8,11 @@ import com.kyuleelim.admincore.member.dto.MemberListResDto;
 import com.kyuleelim.admincore.member.dto.MemberLoginReqDto;
 import com.kyuleelim.admincore.member.dto.MemberSaveReqDto;
 import com.kyuleelim.admincore.member.service.MemberService;
-import lombok.AllArgsConstructor;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +30,14 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@Tag(name = "멤버 관리", description = "")
 @RequestMapping("/api")
-@AllArgsConstructor
 public class MemberController {
 
     @Autowired
-    private final MemberService memberService;
+    private MemberService memberService;
     @Autowired
-    private final JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
     /**
      * @method join
@@ -42,6 +45,7 @@ public class MemberController {
      * @param memberSaveReqDto
      * @return Member, 200
      */
+    @Operation(summary = "회원가입", description = "회원가입")
     @PostMapping("/join")
     public ResponseEntity<CmmResponse<Member>> join(@RequestBody MemberSaveReqDto memberSaveReqDto) {
        log.info("memberSaveReqDto: {}", memberSaveReqDto);
@@ -56,6 +60,7 @@ public class MemberController {
      * @param memberLoginReqDto
      * @return loginInfo, 200
      */
+    @Operation(summary = "로그인", description = "로그인")
     @PostMapping("/login")
     public ResponseEntity<CmmResponse<Map<String, Object>>> login(@RequestBody MemberLoginReqDto memberLoginReqDto){
         // email, password 검증
@@ -74,6 +79,7 @@ public class MemberController {
      * @name 멤버 리스트 조회
      * @return memberList
      */
+    @Operation(summary = "멤버 리스트 조회", description = "멤버 리스트 조회")
     @GetMapping("/members")
     public ResponseEntity<CmmResponse<List<MemberListResDto>>> getMemberList() {
         List<MemberListResDto> memberList = memberService.findAll();
