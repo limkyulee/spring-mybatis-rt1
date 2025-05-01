@@ -37,12 +37,12 @@ public class SecurityConfigs {
                         "/api/join",
                         "/api/login",
                         "/api/users/*",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html",
-                        "/v3/api-docs/**",
-                        "/v3/api-docs.yaml",
-                        "/swagger-resources/**",
-                        "/webjars/**"
+                        "/api/swagger-ui/**",
+                        "/api/swagger-ui.html",
+                        "/api/v3/api-docs/**",
+                        "/api/v3/api-docs.yaml",
+                        "/api/swagger-resources/**",
+                        "/api/webjars/**"
                 ).permitAll().anyRequest().authenticated())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 방식을 사용하지 않음.
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
