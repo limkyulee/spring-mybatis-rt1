@@ -1,5 +1,6 @@
 package com.kyuleelim.admincore.user.controller;
 
+import com.kyuleelim.admincore.common.controller.ApiBaseController;
 import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
 import com.kyuleelim.admincore.common.dto.response.PageResponse;
@@ -9,7 +10,6 @@ import com.kyuleelim.admincore.user.dto.UserUpdateReqDto;
 import com.kyuleelim.admincore.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Tag(name = "사용자 관리", description = "")
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/users")
+public class UserController extends ApiBaseController {
 
     @Autowired
     private UserService userService;
