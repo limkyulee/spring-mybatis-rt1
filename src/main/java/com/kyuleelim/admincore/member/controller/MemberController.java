@@ -1,7 +1,6 @@
 package com.kyuleelim.admincore.member.controller;
 
 import com.kyuleelim.admincore.common.auth.JwtTokenProvider;
-import com.kyuleelim.admincore.common.controller.ApiBaseController;
 import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
 import com.kyuleelim.admincore.member.domain.Member;
@@ -33,7 +32,7 @@ import java.util.Map;
 @RestController
 @Tag(name = "멤버 관리", description = "")
 @RequestMapping("/auth")
-public class MemberController extends ApiBaseController {
+public class MemberController {
 
     @Autowired
     private MemberService memberService;

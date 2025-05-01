@@ -1,6 +1,5 @@
 package com.kyuleelim.admincore.user.controller;
 
-import com.kyuleelim.admincore.common.controller.ApiBaseController;
 import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
 import com.kyuleelim.admincore.common.dto.response.PageResponse;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Tag(name = "사용자 관리", description = "")
 @RequestMapping("/users")
-public class UserController extends ApiBaseController {
+public class UserController {
 
     @Autowired
     private UserService userService;

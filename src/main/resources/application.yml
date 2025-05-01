@@ -2,9 +2,8 @@ spring:
   sql:
     init:
       mode: always
-  mvc:
-    servlet:
-      path: /api
+  servlet:
+    context-path: /api
 
 datasource:
   url: ${DB_URL}
