@@ -31,7 +31,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @Tag(name = "멤버 관리", description = "")
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class MemberController {
 
     @Autowired

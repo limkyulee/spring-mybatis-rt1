@@ -3,10 +3,6 @@ spring:
     init:
       mode: always
 
-server:
-  servlet:
-    context-path: /api
-
 datasource:
   url: ${DB_URL}
   username: ${DB_USERNAME}
@@ -25,7 +21,7 @@ springdoc:
     default-consumes-media-type: application/json # 소비 미디어 타입
     default-produces-media-type: application/json # 생산 미디어 타입
     servers:
-      - url: http://localhost:8080/api
+      - url: http://localhost:8080
         description: 로컬 개발 서버
 
 jwt:

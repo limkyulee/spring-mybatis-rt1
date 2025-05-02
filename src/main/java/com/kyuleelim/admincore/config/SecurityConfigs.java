@@ -34,15 +34,15 @@ public class SecurityConfigs {
                 .httpBasic(AbstractHttpConfigurer::disable) // HTTP Basic 비활성화 (토큰 인증처리할거임)
                 // 특정 url 패턴에 대해서는 인증 처리 제외.
                 .authorizeHttpRequests(a -> a.requestMatchers(
-                        "/api/join",
-                        "/api/login",
+                        "/api/auth/join",
+                        "/api/auth/login",
                         "/api/users/*",
-                        "/api/swagger-ui/**",
-                        "/api/swagger-ui.html",
-                        "/api/v3/api-docs/**",
-                        "/api/v3/api-docs.yaml",
-                        "/api/swagger-resources/**",
-                        "/api/webjars/**"
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**",
+                        "/v3/api-docs.yaml",
+                        "/swagger-resources/**",
+                        "/webjars/**"
                 ).permitAll().anyRequest().authenticated())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 방식을 사용하지 않음.
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
