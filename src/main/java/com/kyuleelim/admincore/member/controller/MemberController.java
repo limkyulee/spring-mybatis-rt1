@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -47,7 +48,7 @@ public class MemberController {
      */
     @Operation(summary = "회원가입", description = "회원가입")
     @PostMapping("/join")
-    public ResponseEntity<CmmResponse<Member>> join(@RequestBody MemberSaveReqDto memberSaveReqDto) {
+    public ResponseEntity<CmmResponse<Member>> join(@RequestBody @Validated MemberSaveReqDto memberSaveReqDto) {
        log.info("memberSaveReqDto: {}", memberSaveReqDto);
         Member member = memberService.join(memberSaveReqDto);
 
@@ -62,7 +63,7 @@ public class MemberController {
      */
     @Operation(summary = "로그인", description = "로그인")
     @PostMapping("/login")
-    public ResponseEntity<CmmResponse<Map<String, Object>>> login(@RequestBody MemberLoginReqDto memberLoginReqDto){
+    public ResponseEntity<CmmResponse<Map<String, Object>>> login(@RequestBody @Validated MemberLoginReqDto memberLoginReqDto){
         // email, password 검증
         Member member = memberService.login(memberLoginReqDto);
         // 일차할 경우 access 토큰 발행

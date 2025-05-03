@@ -20,20 +20,21 @@ public class UserService {
     private final UserMapper userMapper;
 
     /**
-     * @method findAll
-     * @name 사용자 목록 조회
+     * @Method Name findAll
+     * @Description 사용자 목록 조회
      * @param searchCondition
      * @return PageResponse UserList
      */
     public PageResponse<User> findAll(UserListReqDto searchCondition) {
         List<User> userList = userMapper.findAll(searchCondition);
         int totalCount = userMapper.countAll(searchCondition);
+
         return new PageResponse<>(userList, totalCount, searchCondition.getCurrentPage(), searchCondition.getLimit());
     }
 
     /**
-     * @method countAll
-     * @name 사용자 목록 전체 수 조회
+     * @Method Name countAll
+     * @Description 사용자 목록 전체 수 조회
      * @param searchCondition
      * @return number
      */
@@ -42,59 +43,64 @@ public class UserService {
     }
 
     /**
-     * @method findById
-     * @name 아이디로 사용자 상세 조회
+     * @Method Name findById
+     * @Description 사용자 상세 조회
      * @param id
      * @return User
      */
     public User findById(Long id) {
-        return userMapper.findById(id)
-                .orElseThrow(() -> new BizException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.findById(id).orElseThrow(() -> new BizException(ErrorCode.USER_NOT_FOUND));
     }
 
     /**
-     * @method insertUser
-     * @name 사용자 등록
-     * @param user
+     * @Method Name insertUser
+     * @Description 사용자 등록
+     * @Param user
+     * @return 사용자 등록여부 (true/false)
      */
-    public void insertUser(User user) {
-        try{
-            userMapper.insertUser(user);
-        }catch (DuplicateKeyException e){
+    public boolean insertUser(User user) {
+        if(userMapper.existsUserById(user.getId())){
             throw new BizException(ErrorCode.DUPLICATE_USER);
         }
+
+        return isSuccess(userMapper.insertUser(user));
     }
 
     /**
-     * @method updateUser
-     * @name 사용자 업데이트
-     * @param id
+     * @Method Name updateUser
+     * @Description 사용자 수정
      * @param user
+     * @return 사용자 수정여부 (true/false)
      */
-    public void updateUser(Long id, UserUpdateReqDto user) {
-        if (userMapper.findById(id).isEmpty()) {
+    public boolean updatedUser(UserUpdateReqDto user) {
+        if (!userMapper.existsUserById(user.getId())) {
             throw new BizException(ErrorCode.USER_NOT_FOUND);
         }
 
-        try {
-            userMapper.updateUser(id, user);
-        } catch (Exception e) {
-            throw new BizException(ErrorCode.INTERNAL_SERVER_ERROR);
-        }
+        return isSuccess(userMapper.updatedUser(user));
     }
 
     /**
-     * @method deleteUser
-     * @name 사용자 삭제처리
+     * @Method Name deleteUser
+     * @Description 사용자 삭제
      * @param id
+     * @return 사용자 삭제여부 (true/false)
      */
-    public void deleteUser(Long id) {
-        findById(id);
-
-        try {
-            userMapper.deleteUser(id);
-        } catch (Exception e) {
-            throw new BizException(ErrorCode.INTERNAL_SERVER_ERROR);
+    public boolean deleteUser(Long id) {
+        if (!userMapper.existsUserById(id)) {
+            throw new BizException(ErrorCode.USER_NOT_FOUND);
         }
+
+        return isSuccess(userMapper.deleteUser(id));
+    }
+
+    /**
+     * @Method Name isSuccess
+     * @Description 등록, 수정, 삭제 성공 여부 반환
+     * @param affectedRows
+     * @return 성공 여부
+     */
+    private static boolean isSuccess(int affectedRows){
+        return affectedRows > 0;
     }
 }

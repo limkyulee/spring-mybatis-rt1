@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,67 +28,72 @@ public class UserController {
     private UserService userService;
 
     /**
-     * @method findAll
-     * @name 사용사 목록 조회
+     * @Method Name findAll
+     * @Description 사용자 목록 조회
      * @param userListReqDto
-     * @return List<User>
+     * @return 사용자 목록
      */
     @Operation(summary = "사용자관리 목록 조회", description = "사용자관리 목록 조회")
     @PostMapping("/list")
-    public ResponseEntity<CmmResponse<PageResponse<User>>> findAll(@RequestBody UserListReqDto userListReqDto) {
+    public CmmResponseEntity<PageResponse<User>> findAll(@RequestBody UserListReqDto userListReqDto) {
         PageResponse<User> result = userService.findAll(userListReqDto);
 
         return new CmmResponseEntity<>(new CmmResponse<>(result), HttpStatus.OK);
     }
 
     /**
-     * @method findById
-     * @name 사용자 상세 조회
+     * @Method Name findById
+     * @Description 사용자 상세 조회
      * @param id
-     * @return User
+     * @return 사용자 상세 조회 값
      */
     @Operation(summary = "사용자관리 상세 조회", description = "사용자관리 상세 조회")
     @PostMapping("/detail/{id}")
-    public ResponseEntity<CmmResponse<User>> findById(@PathVariable Long id) {
+    public CmmResponseEntity<User> findById(@RequestBody Long id) {
         User result = userService.findById(id);
+
         return new CmmResponseEntity<>(new CmmResponse<>(result), HttpStatus.OK);
     }
 
-    // TODO : validaion
     /**
-     * @method insertUser
-     * @name 사용자 등록
+     * @Method Name insertUser
+     * @Description 사용자 등록
      * @param user
-     * @return
+     * @return 사용자 등록 요청 값
      */
     @Operation(summary = "사용자관리 등록", description = "사용자관리 등록")
     @PostMapping("/insert")
-    public void insertUser(@RequestBody User user) {
+    public CmmResponseEntity<User> insertUser(@RequestBody @Validated User user) {
         userService.insertUser(user);
+
+        return new CmmResponseEntity<>(new CmmResponse<>(user), HttpStatus.OK);
     }
 
     /**
-     * @method updateUser
-     * @name 사용자 업데이트
-     * @param id
+     * @Method Name updateUser
+     * @Description 사용자 수정
      * @param userUpdateReqDto
-     * @return
+     * @return 사용자 수정 요청 값
      */
     @Operation(summary = "사용자관리 업데이트", description = "사용자관리 업데이트")
     @PostMapping("/update/{id}")
-    public void updateUser(@PathVariable Long id, @RequestBody @Validated UserUpdateReqDto userUpdateReqDto) {
-        userService.updateUser(id, userUpdateReqDto);
+    public CmmResponseEntity<UserUpdateReqDto> updateUser(@RequestBody @Validated UserUpdateReqDto userUpdateReqDto) {
+        userService.updatedUser(userUpdateReqDto);
+
+        return new CmmResponseEntity<>(new CmmResponse<>(userUpdateReqDto), HttpStatus.OK);
     }
 
     /**
-     * @method deleteUser
-     * @name 사용자 삭제
+     * @Method Name deleteUser
+     * @Description 사용자 삭제
      * @param id
-     * @return
+     * @return 사용자 삭제 요청 값
      */
     @Operation(summary = "사용자관리 삭제", description = "사용자관리 삭제")
     @PostMapping("/delete/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public CmmResponseEntity<Long> deleteUser(@RequestBody Long id) {
         userService.deleteUser(id);
+
+        return new CmmResponseEntity<>(new CmmResponse<>(id), HttpStatus.OK);
     }
 }
