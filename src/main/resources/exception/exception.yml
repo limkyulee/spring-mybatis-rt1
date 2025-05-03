@@ -1,0 +1,98 @@
+# code 형식: 998:사용자정의 오류, 997:시스템오류
+# desc 형식: 사용자정의 오류메세지
+success:
+  200ok:
+    code: 20000000
+    message: "성 공 "
+    status: 200
+exception:
+  com.fasterxml.jackson.core.io.JsonEOFException:
+    code: 30000001
+    message: "JSON 변환 중 문제가 있습니다."
+    status: 400
+  com.fasterxml.jackson.core.JsonParseException:
+    code: 30000002
+    message: "JSON 변환 중 문제가 있습니다."
+    status: 400
+  com.fasterxml.jackson.databind.exc.MismatchedInputException:
+    code: 30000003
+    message: "JSON 변환 중 문제가 있습니다."
+    status: 400
+  com.fasterxml.jackson.databind.JsonMappingException:
+    code: 30000004
+    message: "JSON 변환 중 문제가 있습니다."
+    status: 400
+  com.fasterxml.jackson.databind.exc.InvalidDefinitionException:
+    code: 30000005
+    message: "JSON 변환 중 문제가 있습니다."
+    status: 400
+  org.springframework.http.converter.HttpMessageConversionException:
+    code: 30000006
+    message: "JSON 변환 중 문제가 있습니다."
+    status: 400
+  org.springframework.http.converter.HttpMessageNotReadableException:
+    code: 30000007
+    message: "JSON 변환 중 문제가 있습니다."
+    status: 400
+  parameter.validation.error:
+    code: 30000008
+    message: "입력값 오류 입니다."
+    status: 400
+  parameter.validation.IllegalArgumentException:
+    code: 30000009
+    message: "입력값 오류 입니다."
+    status: 400
+  org.springframework.web.bind.MethodArgumentNotValidException:
+    code: 30000010
+    message: "입력값 오류 입니다."
+    status: 400
+  org.springframework.web.servlet.NoHandlerFoundException:
+    code: 30000011
+    message: "지원하지 않는 URL"
+    status: 404
+  data_not_found:
+    code: 40000010
+    message: "조회결과가 없습니다."
+    status: 400
+  duplicated_id:
+    code: 40000030
+    message: "{0} 중복되었습니다."
+    status: 409
+  org.springframework.jdbc:
+    code: 41000001
+    message: "데이터베이스 오류"
+    status: 500
+  org.apache.ibatis.reflection.ReflectionException:
+    code: 41000002
+    message: "데이터베이스 오류"
+    status: 500
+  org.springframework.dao.DataAccessException:
+    code: 41000003
+    message: "데이터베이스 오류"
+    status: 500
+  org.apache.ibatis.javassist.NotFoundException:
+    code: 41000004
+    message: "데이터베이스 오류"
+    status: 500
+  # DB 중복키 발생 오류
+  org.springframework.dao.DuplicateKeyException:
+    code: 41000005
+    message: "데이터베이스 오류(중복키 발생)"
+    status: 500
+  # DB 외래키 참조 제약(참조하는 외래키 때문에 삭제 및 변경 불가)
+  org.springframework.dao.DataIntegrityViolationException:
+    code: 41000006
+    message: "데이터베이스 오류(외래키 참조 조건)"
+    status: 500
+  java.sql.SQLException:
+    code: 41000007
+    message: "데이터 베이스 SQL 에러."
+    status: 500
+  org.springframework.jdbc.BadSqlGrammarException:
+    code: 41000007
+    message: "데이터베이스 오류({0})"
+    status: 500
+  undefined:
+    code: 40000999
+    message: "정의되지않은 오류입니다 "
+    status: 500

@@ -3,7 +3,6 @@ package com.kyuleelim.admincore.config;
 import com.kyuleelim.admincore.common.dto.response.CmmResult;
 import lombok.Getter;
 import org.springframework.beans.factory.config.YamlMapFactoryBean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
 import java.text.MessageFormat;
@@ -21,93 +20,91 @@ import java.util.Map;
  */
 @Getter
 public class ExceptionInfoConfig {
-    private Map<String, Object> exceptionInfo = null;
-    private CmmResult successResultDto = null;
+    // exception.yml 내의 전체 데이터를 저장한 Map
+    private Map<String, Object> exceptionYamlMap = null;
+    // 200 OK 용 응답 DTO
+    private CmmResult successResult = null;
+    // 정의되지 않은 예외용 기본 응답 DTO
     private CmmResult undefinedErrorResult = null;
 
+    /**
+     * 생성자에서 YAML 파일을 읽어 필요한 초기화 작업을 수행.
+     */
     @SuppressWarnings("unchecked")
     public ExceptionInfoConfig() {
         String filePath = "exception/exception.yml";
 
+        // YAML 파서 생성 및 파일 지정.
         YamlMapFactoryBean yaml = new YamlMapFactoryBean();
         yaml.setResources(new ClassPathResource(filePath));
-        this.exceptionInfo = yaml.getObject();
-        Map<String, Object> successInfos = (Map<String, Object>) exceptionInfo.get("success");
-        Map<String, Object> successInfo = (Map<String, Object>) successInfos.get("200ok");
+        // 전체 YAML 데이터 Map 형태로 저장.
+        exceptionYamlMap = yaml.getObject();
 
-        successResultDto = new CmmResult();
+        // exceptionYamlMap 이 Null 이 아니어야함을 보장.
+        assert exceptionYamlMap != null;
 
-        successResultDto.setCode(successInfo.get("code").toString());
-        successResultDto.setMessage(successInfo.get("message").toString());
-        successResultDto.setStatus(successInfo.get("status").toString());
+        // 성공 응답 정보 셋팅.
+        Map<String, Object> successSectionMap = (Map<String, Object>) exceptionYamlMap.get("success");
+        Map<String, Object> success200OKMap = (Map<String, Object>) successSectionMap.get("200ok");
 
+        successResult = new CmmResult();
+        successResult.setCode(toStringOrEmpty(success200OKMap.get("code"), "success.200ok.code"));
+        successResult.setMessage(toStringOrEmpty(success200OKMap.get("message"), "success.200ok.message"));
+        successResult.setStatus(toStringOrEmpty(success200OKMap.get("status"), "success.200ok.status"));
 
-        Map<String, Object> exceptionInfos = (Map<String, Object>) exceptionInfo.get("exception");
-        Map<String, Object> exceptionInfo = (Map<String, Object>) exceptionInfos.get("notdefine");
+        // 정의되지 않은 예외 응답 정보 셋팅.
+        Map<String, Object> exceptionSectionMap = (Map<String, Object>) exceptionYamlMap.get("exception");
+        Map<String, Object> undefinedExceptionMap = (Map<String, Object>) exceptionSectionMap.get("undefined");
 
         undefinedErrorResult = new CmmResult();
-
-        undefinedErrorResult.setCode(exceptionInfo.get("code").toString());
-        undefinedErrorResult.setMessage(exceptionInfo.get("message").toString());
-        undefinedErrorResult.setStatus(exceptionInfo.get("status").toString());
+        undefinedErrorResult.setCode(toStringOrEmpty(undefinedExceptionMap.get("code"), "exception.undefined.code"));
+        undefinedErrorResult.setMessage(toStringOrEmpty(undefinedExceptionMap.get("message"), "exception.undefined.message"));
+        undefinedErrorResult.setStatus(toStringOrEmpty(undefinedExceptionMap.get("status"), "exception.undefined.status"));
     }
 
+    // ymlKey 로 특정 성공 정보 조회.
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getSuccessInfo(String ymlKey) {
-        Map<String, Object> allSuccessInfo = (Map<String, Object>) exceptionInfo.get("success");
-        return (Map<String, Object>) allSuccessInfo.get(ymlKey);
+    public Map<String, Object> getSuccessYamlInfo(String ymlKey) {
+        Map<String, Object> successSectionMap = (Map<String, Object>) exceptionYamlMap.get("success");
+        return (Map<String, Object>) successSectionMap.get(ymlKey);
     }
 
+    // ymlKey 로 특정 예외 정보 조회.
     @SuppressWarnings("unchecked")
-    public Map<String, Object> getExceptionInfo(String ymlKey) {
-        Map<String, Object> allExceptions = (Map<String, Object>) exceptionInfo.get("exception");
-        return (Map<String, Object>) allExceptions.get(ymlKey);
+    public Map<String, Object> getExceptionYamlInfo(String ymlKey) {
+        Map<String, Object> exceptionSectionMap = (Map<String, Object>) exceptionYamlMap.get("exception");
+        return (Map<String, Object>) exceptionSectionMap.get(ymlKey);
     }
 
+    // ymlKey 에 따른 성공 응답을 CmmResult 로 반환
     public CmmResult getSuccessInfoResult(String ymlKey) {
-        Map<String, Object> exceptionInfo = getSuccessInfo(ymlKey);
+        Map<String, Object> successYamlInfo = getSuccessYamlInfo(ymlKey);
 
         CmmResult result = new CmmResult();
-        result.setCode(String.valueOf(exceptionInfo.get("code")));
-        result.setMessage((String) exceptionInfo.get("desc"));
-        result.setStatus(String.valueOf(exceptionInfo.get("status")));
+        result.setCode(toStringOrEmpty(successYamlInfo.get("code"), "success." + ymlKey + ".code"));
+        result.setMessage(toStringOrEmpty(successYamlInfo.get("message"), "success." + ymlKey + ".message"));
+        result.setStatus(toStringOrEmpty(successYamlInfo.get("status"), "success." + ymlKey + ".status"));
 
         return result;
-
     }
 
-    @SuppressWarnings("unchecked")
+    // ymlKey 에 따른 예외 응답을 CmmResult 반환
     public CmmResult getExceptionInfoResult(String ymlKey) {
-        Map<String, Object> exceptionInfos = (Map<String, Object>) exceptionInfo.get("exception");
-        Map<String, Object> exceptionInfo = (Map<String, Object>) exceptionInfos.get(ymlKey);
+        Map<String, Object> exceptionYamlInfo = getExceptionYamlInfo(ymlKey);
 
         CmmResult result = new CmmResult();
-        result.setCode(String.valueOf(exceptionInfo.get("code")));
-        result.setMessage(String.valueOf(exceptionInfo.get("desc")));
-        result.setStatus(String.valueOf(exceptionInfo.get("status")));
+        result.setCode(toStringOrEmpty(exceptionYamlInfo.get("code"), "exception." + ymlKey + ".code"));
+        result.setMessage(toStringOrEmpty(exceptionYamlInfo.get("message"), "exception." + ymlKey + ".message"));
+        result.setStatus(toStringOrEmpty(exceptionYamlInfo.get("status"), "exception." + ymlKey + ".status"));
 
         return result;
     }
 
-    public CmmResult getResultDto(String ymlKey) {
-        Map<String, Object> exceptionInfo = getExceptionInfo(ymlKey);
-        if (exceptionInfo == null) {
-            return getUndefinedErrorResult();
+    private String toStringOrEmpty(Object value, String keyPath) {
+        if (value == null) {
+            System.err.println("[WARN] YAML 항목 누락 또는 null: " + keyPath + " → \"\"(빈 문자열) 처리됨");
+            return "";
         }
-        CmmResult resultDesc = new CmmResult();
-
-        resultDesc.setCode(String.valueOf(exceptionInfo.get("code")));
-        resultDesc.setMessage(String.valueOf(exceptionInfo.get("desc")));
-        resultDesc.setStatus(String.valueOf(exceptionInfo.get("status")));
-
-        return resultDesc;
-    }
-
-    public CmmResult getResultDto(String ymlKey, Object[] args) {
-        CmmResult resultDesc = getResultDto(ymlKey);
-
-        String message = MessageFormat.format(resultDesc.getMessage(), args);
-        resultDesc.setMessage(message);
-        return resultDesc;
+        return value.toString();
     }
 }
