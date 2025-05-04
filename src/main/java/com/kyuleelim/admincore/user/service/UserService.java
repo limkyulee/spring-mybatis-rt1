@@ -1,14 +1,12 @@
 package com.kyuleelim.admincore.user.service;
 
 import com.kyuleelim.admincore.common.dto.response.PageResponse;
-import com.kyuleelim.admincore.common.enums.ErrorCode;
 import com.kyuleelim.admincore.common.exception.BizException;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.dto.UserListReqDto;
 import com.kyuleelim.admincore.user.dto.UserUpdateReqDto;
 import com.kyuleelim.admincore.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,7 +47,7 @@ public class UserService {
      * @return User
      */
     public User findById(Long id) {
-        return userMapper.findById(id).orElseThrow(() -> new BizException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.findById(id).orElseThrow(() -> new BizException("user_not_found"));
     }
 
     /**
@@ -60,7 +58,7 @@ public class UserService {
      */
     public boolean insertUser(User user) {
         if(userMapper.existsUserById(user.getId())){
-            throw new BizException(ErrorCode.DUPLICATE_USER);
+            throw new BizException("duplicate_user");
         }
 
         return isSuccess(userMapper.insertUser(user));
@@ -74,7 +72,7 @@ public class UserService {
      */
     public boolean updatedUser(UserUpdateReqDto user) {
         if (!userMapper.existsUserById(user.getId())) {
-            throw new BizException(ErrorCode.USER_NOT_FOUND);
+            throw new BizException("user_not_found");
         }
 
         return isSuccess(userMapper.updatedUser(user));
@@ -88,7 +86,7 @@ public class UserService {
      */
     public boolean deleteUser(Long id) {
         if (!userMapper.existsUserById(id)) {
-            throw new BizException(ErrorCode.USER_NOT_FOUND);
+            throw new BizException("user_not_found");
         }
 
         return isSuccess(userMapper.deleteUser(id));

@@ -1,6 +1,5 @@
 package com.kyuleelim.admincore.common.auth;
 
-import com.kyuleelim.admincore.common.enums.ErrorCode;
 import com.kyuleelim.admincore.common.exception.BizException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -64,16 +63,14 @@ public class JwtAuthFilter extends GenericFilter {
             filterChain.doFilter(request, reponse);
 
         }catch (Exception e) {
-            log.error("error ",e.getMessage());
             e.printStackTrace();
             resp.setStatus(HttpStatus.UNAUTHORIZED.value());
             resp.setContentType("application/json");
             resp.getWriter().write("invalid token");
 
-            throw new BizException(ErrorCode.INVALID_TOKEN);
+            throw new BizException("invalid_token");
 
         }
-
     }
 
     @Override

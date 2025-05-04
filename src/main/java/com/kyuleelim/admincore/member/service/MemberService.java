@@ -1,6 +1,5 @@
 package com.kyuleelim.admincore.member.service;
 
-import com.kyuleelim.admincore.common.enums.ErrorCode;
 import com.kyuleelim.admincore.common.exception.BizException;
 import com.kyuleelim.admincore.member.domain.Member;
 import com.kyuleelim.admincore.member.dto.MemberListResDto;
@@ -52,7 +51,7 @@ public class MemberService {
     private void validateDuplicateEmail(String email) {
         memberMapper.findByEmail(email)
                 .ifPresent(m -> {
-                    throw new BizException(ErrorCode.DUPLICATE_EMAIL);
+                    throw new BizException("duplicate_email");
                 });
     }
 
@@ -80,7 +79,7 @@ public class MemberService {
      */
     public Member login(MemberLoginReqDto memberLoginReqDto) {
         Member member = memberMapper.findByEmail(memberLoginReqDto.getEmail())
-                .orElseThrow(() -> new BizException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new BizException("user_not_found"));
 
         log.info("로그인 시도 email: {}", memberLoginReqDto.getEmail());
         log.info("입력된 비밀번호(plain): {}", memberLoginReqDto.getPassword());
@@ -88,7 +87,7 @@ public class MemberService {
 
         // matches | 자동 암호화
         if(!passwordEncoder.matches(memberLoginReqDto.getPassword(), member.getPassword())){
-            throw  new BizException(ErrorCode.WRONG_PASSWORD);
+            throw  new BizException("wrong_login_info");
         }
 
         return member;

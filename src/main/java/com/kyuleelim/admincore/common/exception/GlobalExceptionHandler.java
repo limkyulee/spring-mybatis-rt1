@@ -4,6 +4,7 @@ import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
 import com.kyuleelim.admincore.common.dto.response.CmmResult;
 import com.kyuleelim.admincore.config.ExceptionInfoConfig;
+import java.text.MessageFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
@@ -69,22 +70,33 @@ public class GlobalExceptionHandler {
         return new CmmResponseEntity<>(cmmResponse, HttpStatus.valueOf(statusCode));
     }
 
-//
-//    @ExceptionHandler(BizException.class)
-//    public ResponseEntity<CmmErrorResponse<Object>> handleBizException(BizException ex) {
-//        ErrorCode errorCode = ex.getErrorCode();
-//        return ResponseEntity
-//                .status(errorCode.getHttpStatus().value())
-//                .body(CmmErrorResponse.error(errorCode));
-//    }
-//
-//    // INTERNAL_SERVER_ERROR
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<CmmErrorResponse<Object>> handleException(Exception ex) {
-//        return ResponseEntity
-//                .status(ErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus().value())
-//                .body(CmmErrorResponse.error(ErrorCode.INTERNAL_SERVER_ERROR));
-//    }
+    /**
+     * @Method Name handleBizException
+     * @Description BizException Handler
+     * @param ex
+     * @return
+     * @throws Exception
+     */
+    @ExceptionHandler(BizException.class)
+    public @ResponseBody CmmResponseEntity<Void> handleBizException(BizException ex) throws Exception {
+        CmmResult exceptionYamlInfo = null;
+        // 최종 에러 response
+        CmmResponse<Void> cmmResponse = new CmmResponse<>();
+
+        if (ex.getMessageArgs() != null) {
+            exceptionYamlInfo = getExceptionYamlInfo(ex.getYmlKey(), ex.getMessageArgs().toArray());
+        } else {
+            exceptionYamlInfo = getExceptionYamlInfo(ex.getYmlKey());
+        }
+
+        // 에러 response 셋팅.
+        int statusCode = Integer.parseInt(exceptionYamlInfo.getStatus());
+        cmmResponse.setHttpStatusCode(statusCode);
+        cmmResponse.setCode(exceptionYamlInfo.getCode());
+        cmmResponse.setMessage(exceptionYamlInfo.getMessage());
+
+        return new CmmResponseEntity<>(cmmResponse, HttpStatus.valueOf(statusCode));
+    }
 
     private CmmResult getExceptionYamlInfo(String ymlKey) {
         Map<String, Object> exceptionYamlInfo = exceptionInfoConfig.getExceptionYamlInfo(ymlKey);
@@ -96,20 +108,20 @@ public class GlobalExceptionHandler {
         return exceptionInfoConfig.getExceptionInfoResult(ymlKey);
     }
 
-//    private CmmResult getResultDto(String ymlKey, Object[] args) {
-//        Map<String, Object> exceptionYamlInfo = exceptionInfoConfig.getExceptionYamlInfo(ymlKey);
-//
-//        if (exceptionYamlInfo == null) {
-//            return exceptionInfoConfig.getUndefinedErrorResult();
-//        }
-//
-//        CmmResult resultDesc = new CmmResult();
-//
-//        resultDesc.setCode(exceptionInfo.get("code").toString());
-//        String desc = exceptionInfo.get("desc").toString();
-//        resultDesc.setMessage(MessageFormat.format(desc, args));
-//        resultDesc.setStatus(exceptionInfo.get("status").toString());
-//
-//        return resultDesc;
-//    }
+    private CmmResult getExceptionYamlInfo(String ymlKey, Object[] args) {
+        Map<String, Object> exceptionYamlInfo = exceptionInfoConfig.getExceptionYamlInfo(ymlKey);
+
+        if (exceptionYamlInfo == null) {
+            return exceptionInfoConfig.getUndefinedErrorResult();
+        }
+
+        CmmResult cmmResult = new CmmResult();
+
+        cmmResult.setCode(exceptionYamlInfo.get("code").toString());
+        String message = exceptionYamlInfo.get("message").toString();
+        cmmResult.setMessage(MessageFormat.format(message, args));
+        cmmResult.setStatus(exceptionYamlInfo.get("status").toString());
+
+        return cmmResult;
+    }
 }
