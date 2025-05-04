@@ -1,6 +1,7 @@
 package com.kyuleelim.admincore.user.controller;
 
 import com.kyuleelim.admincore.common.domain.CreateGroup;
+import com.kyuleelim.admincore.common.domain.DetailGroup;
 import com.kyuleelim.admincore.common.domain.UpdateGroup;
 import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
@@ -46,13 +47,13 @@ public class UserController {
     /**
      * @Method Name findById
      * @Description 사용자 상세 조회
-     * @param id
+     * @param userReqDto
      * @return 사용자 상세 조회 값
      */
     @Operation(summary = "사용자관리 상세 조회", description = "사용자관리 상세 조회")
     @PostMapping("/detail")
-    public CmmResponseEntity<User> findById(@RequestBody Long id) {
-        User result = userService.findById(id);
+    public CmmResponseEntity<User> findById(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
+        User result = userService.findById(userReqDto.getId());
 
         return new CmmResponseEntity<>(new CmmResponse<>(result), HttpStatus.OK);
     }
@@ -88,12 +89,13 @@ public class UserController {
     /**
      * @Method Name deleteUser
      * @Description 사용자 삭제
-     * @param id
+     * @param userReqDto
      * @return 사용자 삭제 요청 값
      */
     @Operation(summary = "사용자관리 삭제", description = "사용자관리 삭제")
     @PostMapping("/delete")
-    public CmmResponseEntity<Long> deleteUser(@RequestBody Long id) {
+    public CmmResponseEntity<Long> deleteUser(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
+        Long id = userReqDto.getId();
         userService.deleteUser(id);
 
         return new CmmResponseEntity<>(new CmmResponse<>(id), HttpStatus.OK);

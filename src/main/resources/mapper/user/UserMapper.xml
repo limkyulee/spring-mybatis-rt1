@@ -61,7 +61,6 @@
         INSERT INTO user (
              username,
              password,
-             name,
              email,
              use_yn,
              created_at,
@@ -70,7 +69,6 @@
         VALUES (
              #{username},
              #{password},
-             #{name},
              #{email},
              #{useYn},
              CURRENT_TIMESTAMP,
@@ -83,17 +81,17 @@
         UPDATE user
         <set>
             <trim suffixOverrides=",">
-                <if test="user.username !=null">
-                    username = #{user.username},
+                <if test="username !=null">
+                    username = #{username},
                 </if>
-                <if test="user.password != null">
-                    password = #{user.password},
+                <if test="password != null">
+                    password = #{password},
                 </if>
-                <if test="user.email != null">
-                    email = #{user.email},
+                <if test="email != null">
+                    email = #{email},
                 </if>
-                <if test="user.useYn != null">
-                    use_yn = #{user.useYn},
+                <if test="useYn != null">
+                    use_yn = #{useYn},
                 </if>
                 updated_at = NOW()
             </trim>

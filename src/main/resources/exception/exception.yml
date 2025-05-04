@@ -50,6 +50,10 @@ exception:
     code: 30000011
     message: "지원하지 않는 URL"
     status: 404
+  org.mybatis.spring.MyBatisSystemException:
+    code: 30000012
+    message: "데이터베이스 오류"
+    status: 500
   data_not_found:
     code: 40000010
     message: "조회결과가 없습니다."
