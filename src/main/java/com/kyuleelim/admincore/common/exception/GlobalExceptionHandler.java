@@ -26,6 +26,8 @@ import java.util.Map;
  * Description  : Global Exception Handler
  * ===========================================
  */
+
+// TODO : error log
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -95,6 +97,27 @@ public class GlobalExceptionHandler {
         cmmResponse.setCode(exceptionYamlInfo.getCode());
         cmmResponse.setMessage(exceptionYamlInfo.getMessage());
 
+        return new CmmResponseEntity<>(cmmResponse, HttpStatus.valueOf(statusCode));
+    }
+
+    /**
+     * @Method Name handleHandlerNotFoundException
+     * @Description Handler Not Found Exception Handler
+     * @param ex
+     * @return
+     * @throws Exception
+     */
+    @ExceptionHandler(Exception.class)
+    public @ResponseBody CmmResponseEntity<Void> handleHandlerNotFoundException(Exception ex) throws Exception {
+        CmmResult exceptionYamlInfo = getExceptionYamlInfo(ex.getClass().getName());
+        // 최종 에러 response
+        CmmResponse<Void> cmmResponse = new CmmResponse<>();
+
+        // 에러 response 셋팅.
+        int statusCode = Integer.parseInt(exceptionYamlInfo.getStatus());
+        cmmResponse.setHttpStatusCode(statusCode);
+        cmmResponse.setCode(exceptionYamlInfo.getCode());
+        cmmResponse.setMessage(exceptionYamlInfo.getMessage());
         return new CmmResponseEntity<>(cmmResponse, HttpStatus.valueOf(statusCode));
     }
 
