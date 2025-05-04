@@ -1,8 +1,3 @@
--- ROLE
-INSERT INTO role (role_name,description) VALUES
-    ('ADMIN', 'System Administrator'),
-    ('USER', 'Regular User');
-
 -- USER
 INSERT INTO user (username, password, name, email, use_yn) VALUES
     ('admin', 'admin1234', '관리자', 'admin@example.com', 'Y'),

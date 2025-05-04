@@ -5,51 +5,51 @@
 
     <select id="findById" resultType="com.kyuleelim.admincore.user.domain.User">
         -- UserMapper.findById
-        SELECT id, username, email, created_at
+      SELECT id, username, email, created_at
         FROM user
-        WHERE id = #{id}
-          AND use_yn = 'Y'
+       WHERE id = #{id}
+         AND use_yn = 'Y'
     </select>
 
     <select id="findAll" resultType="com.kyuleelim.admincore.user.domain.User">
         -- UserMapper.findAll
         SELECT *
-        FROM user
+          FROM user
         <where>
             use_yn = 'Y'
             <if test="searchType != null and keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == 'username'">
                         AND username
-                        LIKE CONCAT(#{keyword}, '%')
+                       LIKE CONCAT(#{keyword}, '%')
                     </when>
                     <when test="searchType == 'email'">
                         AND email
-                        LIKE CONCAT(#{keyword}, '%')
+                       LIKE CONCAT(#{keyword}, '%')
                     </when>
                 </choose>
             </if>
         </where>
         ORDER BY id DESC
         LIMIT #{limit}
-        OFFSET #{offset}
+       OFFSET #{offset}
     </select>
 
     <select id="countAll" resultType="int">
         -- UserMapper.countAll
         SELECT COUNT(*)
-        FROM user
+          FROM user
         <where>
             use_yn = 'Y'
             <if test="searchType != null and keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == 'username'">
                         AND username
-                        LIKE CONCAT(#{keyword}, '%')
+                       LIKE CONCAT(#{keyword}, '%')
                     </when>
                     <when test="searchType == 'email'">
                         AND email
-                        LIKE CONCAT(#{keyword}, '%')
+                       LIKE CONCAT(#{keyword}, '%')
                     </when>
                 </choose>
             </if>
