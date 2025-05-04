@@ -7,7 +7,6 @@ import com.kyuleelim.admincore.member.dto.MemberLoginReqDto;
 import com.kyuleelim.admincore.member.dto.MemberSaveReqDto;
 import com.kyuleelim.admincore.member.mapper.MemberMapper;
 import com.kyuleelim.admincore.member.service.MemberService;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

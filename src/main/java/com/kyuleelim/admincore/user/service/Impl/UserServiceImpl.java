@@ -10,6 +10,7 @@ import com.kyuleelim.admincore.user.service.UserService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author limkyulee
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
  * @see 사용자 관리 Service Impl
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
