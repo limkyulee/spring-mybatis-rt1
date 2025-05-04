@@ -28,8 +28,8 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * @method join
-     * @name 회원가입
+     * @Method Name join
+     * @Description 회원가입
      * @param memberSaveReqDto
      * @return member
      */
@@ -37,15 +37,14 @@ public class MemberService {
         validateDuplicateEmail(memberSaveReqDto.getEmail());
 
         Member member = createMember(memberSaveReqDto);
-        log.info("member {}", member);
         memberMapper.save(member);
 
         return member;
     }
 
     /**
-     * @method validateDuplicateEmail
-     * @name 이메일 중복 검사
+     * @Method Name validateDuplicateEmail
+     * @Description 이메일 중복 검사
      * @param email
      */
     private void validateDuplicateEmail(String email) {
@@ -56,8 +55,8 @@ public class MemberService {
     }
 
     /**
-     * @method createMember
-     * @name 회원가입을 위한 멤버 생성
+     * @Method Name createMember
+     * @Description 회원가입을 위한 멤버 생성
      * @param memberSaveReqDto
      * @return member
      */
@@ -72,8 +71,8 @@ public class MemberService {
     }
 
     /**
-     * @method login
-     * @name 로그인
+     * @Method Name login
+     * @Description 로그인
      * @param memberLoginReqDto
      * @return member
      */
@@ -94,8 +93,8 @@ public class MemberService {
     }
 
     /**
-     * @method findAll
-     * @name 회원가입한 멤버 전체 조회
+     * @Method Name findAll
+     * @Description 회원가입한 멤버 전체 조회
      * @return memberListResDtos
      */
     public List<MemberListResDto> findAll() {
