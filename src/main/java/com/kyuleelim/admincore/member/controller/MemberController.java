@@ -12,26 +12,21 @@ import com.kyuleelim.admincore.member.service.MemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author limkyulee
  * @version 1.0 2025.04.27
- * @see 회원 관리 (회원가입, 로그인, 전체 조회) Controller
+ * @see 회원 관리 Controller
  */
-
 @RestController
-@Tag(name = "멤버 관리", description = "")
+@Tag(name = "회원 관리", description = "")
 @RequestMapping("/api/auth")
 public class MemberController {
 
@@ -44,7 +39,7 @@ public class MemberController {
      * @Method Name join
      * @Description 회원가입
      * @param memberSaveReqDto
-     * @return Member, 200
+     * @return 회원가입 요청 정보
      */
     @Operation(summary = "회원가입", description = "회원가입")
     @PostMapping("/join")
@@ -58,7 +53,7 @@ public class MemberController {
      * @Method Name login
      * @Description 로그인
      * @param memberLoginReqDto
-     * @return loginInfo, 200
+     * @return 로그인 요청 정보
      */
     @Operation(summary = "로그인", description = "로그인")
     @PostMapping("/login")
@@ -76,13 +71,14 @@ public class MemberController {
 
     /**
      * @Method Name getMemberList
-     * @Description 멤버 리스트 조회
-     * @return memberList
+     * @Description 회원 목록 조회
+     * @return 회원 목록
      */
-    @Operation(summary = "멤버 리스트 조회", description = "멤버 리스트 조회")
+    @Operation(summary = "회원 목록 조회", description = "회원 목록 조회")
     @GetMapping("/members")
-    public CmmResponseEntity<List<MemberListResDto>> getMemberList() {
-        List<MemberListResDto> memberList = memberService.findAll();
+    public CmmResponseEntity<MemberListResDto> getMemberList() {
+        MemberListResDto memberList = memberService.findAll();
+
         return new CmmResponseEntity<>(new CmmResponse<>(memberList), HttpStatus.OK);
     }
 }

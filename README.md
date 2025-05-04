@@ -1,10 +1,13 @@
 # Admin Core API
 
-Spring Boot REST API for Common Admin Management (User, Code, Menu, Role)
+Spring Boot REST API for Common Admin Management (User, Member, WebSocket)
 
 ### ⚙️ Setting
 
-1`.env` 파일 루트 경로에 생성 후 DB 정보 입력
+1. `.env` 파일 루트 경로에 생성 후 DB 정보 입력 
+    - `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`
+2. schema.sql 파일 실행 오류 시, 테이블 수동 생성
+   - `USER`, `MEMBER`
 
 ### Tech
 - Java 21
@@ -14,10 +17,13 @@ Spring Boot REST API for Common Admin Management (User, Code, Menu, Role)
 - Gradle
 - Lombok
 
-### API List
+### Contents
 
 - [X] 회원가입
 - [X] 로그인/JWT 인증
-- [ ] 사용자/권한 등록 및 매핑
-- [ ] common exception/BizException(왤케 어려움 ㅜ____ㅠ)
+- [X] 사용자관리 CRUD
+- [X] GlobalExceptionHandler
+- [X] BizException
+- [ ] WebSocket
+- [ ] Redis
 

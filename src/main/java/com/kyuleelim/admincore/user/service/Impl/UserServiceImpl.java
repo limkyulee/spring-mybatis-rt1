@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
      * @param searchCondition
      * @return 전체 사용자 수
      */
-    public int countAll(UserListReqDto searchCondition) {
+    private int countAll(UserListReqDto searchCondition) {
         return userMapper.countAll(searchCondition);
     }
 
