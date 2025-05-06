@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.Alias;
 
 @Data
-@Alias("MemberListResDto")
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberListResDto {

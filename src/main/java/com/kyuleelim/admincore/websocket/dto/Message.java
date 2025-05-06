@@ -1,5 +1,6 @@
 package com.kyuleelim.admincore.websocket.dto;
 
+import com.kyuleelim.admincore.websocket.domain.MessageType;
 import lombok.Data;
 
 /**
@@ -11,5 +12,5 @@ import lombok.Data;
 public class Message {
     private String sender;
     private String content;
-    private String type; // CHAT, JOIN, LEAVE
+    private MessageType type; // CHAT, JOIN, LEAVE
 }

@@ -5,32 +5,32 @@
 
     <select id="findById" parameterType="Long" resultType="User">
         -- UserMapper.findById
-      SELECT id, username, email, created_at
-        FROM user
-       WHERE id = #{id}
-         AND use_yn = 'Y'
+      SELECT USER_ID, USER_NM, EMAIL, CREATED_AT
+        FROM USER
+       WHERE USER_ID = #{id}
+         AND USE_YN = 'Y'
     </select>
 
     <select id="findAll" parameterType="UserListReqDto" resultType="User">
         -- UserMapper.findAll
         SELECT *
-          FROM user
+          FROM USER
         <where>
             use_yn = 'Y'
             <if test="searchType != null and keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == 'username'">
-                        AND username
+                        AND USER_NAME
                        LIKE CONCAT(#{keyword}, '%')
                     </when>
                     <when test="searchType == 'email'">
-                        AND email
+                        AND EMAIL
                        LIKE CONCAT(#{keyword}, '%')
                     </when>
                 </choose>
             </if>
         </where>
-        ORDER BY id DESC
+        ORDER BY USER_ID DESC
         LIMIT #{limit}
        OFFSET #{offset}
     </select>
@@ -38,17 +38,17 @@
     <select id="countAll" parameterType="UserListReqDto" resultType="int">
         -- UserMapper.countAll
         SELECT COUNT(*)
-          FROM user
+          FROM USER
         <where>
-            use_yn = 'Y'
+            USE_YN = 'Y'
             <if test="searchType != null and keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == 'username'">
-                        AND username
+                        AND USER_NAME
                        LIKE CONCAT(#{keyword}, '%')
                     </when>
                     <when test="searchType == 'email'">
-                        AND email
+                        AND EMAIL
                        LIKE CONCAT(#{keyword}, '%')
                     </when>
                 </choose>
@@ -58,13 +58,13 @@
 
     <insert id="insertUser" parameterType="UserReqDto" useGeneratedKeys="true" keyProperty="id">
         -- UserMapper.insertUser
-        INSERT INTO user (
-             username,
-             password,
-             email,
-             use_yn,
-             created_at,
-             updated_at
+        INSERT INTO USER (
+             USER_NAME,
+             PASSWROD,
+             EMAIL,
+             USE_YN,
+             CREATED_AT,
+             UPDATED_AT
         )
         VALUES (
              #{username},
@@ -78,32 +78,32 @@
     
     <update id="updateUser" parameterType="UserReqDto">
         -- UserMapper.updatedUser
-        UPDATE user
+        UPDATE USER
         <set>
             <trim suffixOverrides=",">
                 <if test="username !=null">
-                    username = #{username},
+                    USER_NAME = #{username},
                 </if>
                 <if test="password != null">
-                    password = #{password},
+                    PASSWORD = #{password},
                 </if>
                 <if test="email != null">
-                    email = #{email},
+                    EMAIL = #{email},
                 </if>
                 <if test="useYn != null">
-                    use_yn = #{useYn},
+                    USE_YN = #{useYn},
                 </if>
-                updated_at = NOW()
+                    UPDATED_AT = NOW()
             </trim>
         </set>
-        WHERE id = #{id}
+        WHERE USER_ID = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="Long">
         -- UserMapper.deleteUser
-        UPDATE user
-           SET use_yn = 'N', updated_at = NOW()
-         WHERE id = #{id}
+        UPDATE USER
+           SET USER_YN = 'N', UPDATED_AT = NOW()
+         WHERE USER_ID = #{id}
     </delete>
 
     <select id="existUserById" parameterType="Long" resultType="boolean">
@@ -111,8 +111,8 @@
         SELECT CASE WHEN COUNT(1) > 0 THEN TRUE
                     ELSE FALSE
                     END
-          FROM user
-         WHERE id = #{id}
+          FROM USER
+         WHERE USER_ID = #{id}
     </select>
 
   <select id="existUserByEmail" parameterType="String" resultType="boolean">
@@ -120,7 +120,7 @@
     SELECT CASE WHEN COUNT(1) > 0 THEN TRUE
                 ELSE FALSE
              END
-    FROM user
-    WHERE email = #{email}
+    FROM USER
+    WHERE EMAIL = #{email}
   </select>
 </mapper>
