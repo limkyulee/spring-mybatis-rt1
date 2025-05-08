@@ -19,8 +19,8 @@ public class MessageController {
      * @param message
      * @return
      */
-    @MessageMapping("/chat.send")
-    @SendTo("/topic/listen")
+    @MessageMapping("/chat")
+    @SendTo("/sub/messages")
     public Message sendMessage(Message message){
         return message;
     }

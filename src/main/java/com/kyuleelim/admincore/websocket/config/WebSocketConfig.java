@@ -24,9 +24,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 클라이언트가 구독(Subscribe)할 때 쓰는 경로
-        registry.enableSimpleBroker("/topic");
+        registry.enableSimpleBroker("/sub");
         // 클라이언트가 보낼 때 앞에 붙이는 경로
-        registry.setApplicationDestinationPrefixes("/app");
+        registry.setApplicationDestinationPrefixes("/pub");
     }
 
     /**
@@ -37,7 +37,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 클라이언트가 처음 연결하는 주소
-        registry.addEndpoint("/rt1-websocket")
+        registry.addEndpoint("/ws-rt1")
 //                .setAllowedOrigins("")
                 .withSockJS(); // 브라우저 호환성 지원
     }
