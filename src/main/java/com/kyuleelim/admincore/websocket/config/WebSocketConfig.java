@@ -1,6 +1,9 @@
 package com.kyuleelim.admincore.websocket.config;
 
 import java.net.http.WebSocket;
+
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -12,9 +15,16 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
  * @version 1.0, 5/5/25
  * @see WebSocket STOMP Config
  */
+@Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @PostConstruct
+    public void init() {
+        log.info("WebSocketConfig init");
+    }
+
 
     /**
      * @Method Name configureMessageBroker
@@ -38,7 +48,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 클라이언트가 처음 연결하는 주소
         registry.addEndpoint("/ws-rt1")
-//                .setAllowedOrigins("")
+                .setAllowedOriginPatterns("*")
                 .withSockJS(); // 브라우저 호환성 지원
     }
 }

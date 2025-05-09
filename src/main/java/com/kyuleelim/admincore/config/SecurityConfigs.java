@@ -42,7 +42,8 @@ public class SecurityConfigs {
                         "/v3/api-docs/**",
                         "/v3/api-docs.yaml",
                         "/swagger-resources/**",
-                        "/webjars/**"
+                        "/webjars/**",
+                        "/ws-rt1/**"
                 ).permitAll().anyRequest().authenticated())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 방식을 사용하지 않음.
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
