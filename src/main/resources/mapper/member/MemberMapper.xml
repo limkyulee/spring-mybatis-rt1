@@ -4,29 +4,36 @@
 <mapper namespace="com.kyuleelim.admincore.member.mapper.MemberMapper">
     <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="MemberSaveReqDto">
         -- MemberMapper.save
-        INSERT INTO MEMBER (
-             USER_NM,
-             PASSWORD,
-             EMAIL,
-             ROLE
-        )
-       VALUES (
-            #{username},
-            #{password},
-            #{email},
-            #{role}
-        )
+        INSERT INTO MEMBER
+            ( USER_NM
+            , PASSWORD
+            , EMAIL
+            , ROLE_NM )
+       VALUES
+            ( #{userNm}
+            , #{password}
+            , #{email}
+            , #{roleNm} )
     </insert>
 
     <select id="findByEmail" parameterType="MemberLoginReqDto">
         -- MemberMapper.findByEmail
-        SELECT MEMBER_ID, USER_NAME, EMAIL, ROLE, PASSWORD
-        FROM MEMBER
-        WHERE EMAIL = #{email}
+        SELECT MEMBER_ID
+             , USER_NM
+             , EMAIL
+             , PASSWORD
+             , ROLE_NM
+          FROM MEMBER
+         WHERE EMAIL = #{email}
     </select>
 
     <select id="findAll" resultType="Member">
         -- MemberMapper.findAll
-        SELECT * FROM MEMBER
+        SELECT MEMBER_ID
+             , USER_NM
+             , EMAIL
+             , PASSWORD
+             , ROLE_NM
+        FROM MEMBER
     </select>
 </mapper>

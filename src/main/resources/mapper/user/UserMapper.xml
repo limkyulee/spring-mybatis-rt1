@@ -5,9 +5,12 @@
 
     <select id="findById" parameterType="Long" resultType="User">
         -- UserMapper.findById
-      SELECT USER_ID, USER_NM, EMAIL, CREATED_AT
+      SELECT USER_ID
+           , USER_NM
+           , EMAIL
+           , CREATED_AT
         FROM USER
-       WHERE USER_ID = #{id}
+       WHERE USER_ID = #{userId}
          AND USE_YN = 'Y'
     </select>
 
@@ -16,11 +19,11 @@
         SELECT *
           FROM USER
         <where>
-            use_yn = 'Y'
+            USE_YN = 'Y'
             <if test="searchType != null and keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == 'username'">
-                        AND USER_NAME
+                        AND USER_NM
                        LIKE CONCAT(#{keyword}, '%')
                     </when>
                     <when test="searchType == 'email'">
@@ -44,7 +47,7 @@
             <if test="searchType != null and keyword != null and keyword != ''">
                 <choose>
                     <when test="searchType == 'username'">
-                        AND USER_NAME
+                        AND USER_NM
                        LIKE CONCAT(#{keyword}, '%')
                     </when>
                     <when test="searchType == 'email'">
@@ -58,22 +61,20 @@
 
     <insert id="insertUser" parameterType="UserReqDto" useGeneratedKeys="true" keyProperty="id">
         -- UserMapper.insertUser
-        INSERT INTO USER (
-             USER_NAME,
-             PASSWROD,
-             EMAIL,
-             USE_YN,
-             CREATED_AT,
-             UPDATED_AT
-        )
-        VALUES (
-             #{username},
-             #{password},
-             #{email},
-             #{useYn},
-             CURRENT_TIMESTAMP,
-             CURRENT_TIMESTAMP
-        )
+        INSERT INTO USER
+             ( USER_NM
+             , PASSWORD
+             , EMAIL
+             , USE_YN
+             , CREATED_AT
+             , UPDATED_AT )
+        VALUES
+             ( #{userNm}
+             , #{password}
+             , #{email}
+             , #{useYn}
+             , CURRENT_TIMESTAMP
+             , CURRENT_TIMESTAMP )
     </insert>
     
     <update id="updateUser" parameterType="UserReqDto">
@@ -82,7 +83,7 @@
         <set>
             <trim suffixOverrides=",">
                 <if test="username !=null">
-                    USER_NAME = #{username},
+                    USER_NM = #{userNm},
                 </if>
                 <if test="password != null">
                     PASSWORD = #{password},
@@ -96,14 +97,15 @@
                     UPDATED_AT = NOW()
             </trim>
         </set>
-        WHERE USER_ID = #{id}
+        WHERE USER_ID = #{userId}
     </update>
 
     <delete id="deleteUser" parameterType="Long">
         -- UserMapper.deleteUser
         UPDATE USER
-           SET USER_YN = 'N', UPDATED_AT = NOW()
-         WHERE USER_ID = #{id}
+           SET USER_YN = 'N'
+             , UPDATED_AT = NOW()
+         WHERE USER_ID = #{userId}
     </delete>
 
     <select id="existUserById" parameterType="Long" resultType="boolean">
@@ -112,7 +114,7 @@
                     ELSE FALSE
                     END
           FROM USER
-         WHERE USER_ID = #{id}
+         WHERE USER_ID = #{userId}
     </select>
 
   <select id="existUserByEmail" parameterType="String" resultType="boolean">

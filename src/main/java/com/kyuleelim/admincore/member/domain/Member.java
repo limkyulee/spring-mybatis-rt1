@@ -10,9 +10,9 @@ import org.apache.ibatis.type.Alias;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
-    private Long id;
-    private String username;
+    private Long memberId;
+    private String userNm;
     private String email;
     private String password;
-    private Role role;
+    private Role roleNm;
 }

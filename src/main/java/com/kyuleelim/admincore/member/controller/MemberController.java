@@ -13,6 +13,7 @@ import com.kyuleelim.admincore.member.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0 2025.04.27
  * @see 회원 관리 Controller
  */
+@Slf4j
 @RestController
 @Tag(name = "회원 관리", description = "")
 @RequestMapping("/api/auth")
@@ -42,6 +44,7 @@ public class MemberController {
     @Operation(summary = "회원가입", description = "회원가입")
     @PostMapping("/join")
     public CmmResponseEntity<Member> join(@RequestBody @Validated MemberSaveReqDto memberSaveReqDto) {
+        log.info("memberSaveReqDto: {}", memberSaveReqDto);
         Member member = memberService.join(memberSaveReqDto);
 
        return new CmmResponseEntity<>(new CmmResponse<>(member), HttpStatus.OK);
@@ -58,11 +61,12 @@ public class MemberController {
     public CmmResponseEntity<LoginInfo> login(@RequestBody @Validated MemberLoginReqDto memberLoginReqDto){
         // email, password 검증
         Member member = memberService.login(memberLoginReqDto);
+        log.info("member {}", member);
         // 일차할 경우 access 토큰 발행
-        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRole().toString());
+        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoleNm().toString());
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setToken(jwtToken);
-        loginInfo.setId(member.getId().toString());
+        loginInfo.setId(member.getMemberId().toString());
 
         return new CmmResponseEntity<>(new CmmResponse<>(loginInfo), HttpStatus.OK);
     }

@@ -53,8 +53,9 @@ public class MemberServiceImpl implements MemberService {
     public Member login(MemberLoginReqDto memberLoginReqDto) {
         Member member = memberMapper.findByEmail(memberLoginReqDto.getEmail())
             .orElseThrow(() -> new BizException("user_not_found"));
-
+        log.info("member {}", member);
         log.info("로그인 시도 email: {}", memberLoginReqDto.getEmail());
+        log.info("role: {}", member.getRoleNm());
         log.info("입력된 비밀번호(plain): {}", memberLoginReqDto.getPassword());
         log.info("DB에서 읽은 비밀번호(encoded): {}", member.getPassword());
 
@@ -101,10 +102,10 @@ public class MemberServiceImpl implements MemberService {
      */
     private Member createMember(MemberSaveReqDto memberSaveReqDto) {
         Member member = new Member();
-        member.setUsername(memberSaveReqDto.getUsername());
+        member.setUserNm(memberSaveReqDto.getUserNm());
         member.setEmail(memberSaveReqDto.getEmail());
         member.setPassword(passwordEncoder.encode(memberSaveReqDto.getPassword()));
-        member.setRole(memberSaveReqDto.getRole());
+        member.setRoleNm(memberSaveReqDto.getRoleNm());
 
         return member;
     }

@@ -13,9 +13,9 @@ import org.apache.ibatis.type.Alias;
 @Alias("UserReqDto")
 public class UserReqDto {
     @NotNull(groups = {UpdateGroup.class, DetailGroup.class})
-    private Long id;
+    private Long userId;
     @NotBlank(groups = {CreateGroup.class, UpdateGroup.class})
-    private String username;
+    private String userNm;
     @NotBlank(groups = {CreateGroup.class, UpdateGroup.class})
     private String password;
     @Email(groups = {CreateGroup.class, UpdateGroup.class})
