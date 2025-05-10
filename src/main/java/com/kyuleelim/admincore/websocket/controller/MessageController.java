@@ -5,6 +5,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 /**
  * @author limkyulee
  * @version 1.0, 5/5/25
@@ -21,7 +23,9 @@ public class MessageController {
      */
     @MessageMapping("/chat")
     @SendTo("/sub/messages")
-    public Message sendMessage(Message message){
+    public Message sendMessage(Message message, Principal principal){
+        // 송신자 셋팅
+        message.setSender(principal.getName());
         return message;
     }
 }

@@ -106,6 +106,10 @@ exception:
     code: 40300001
     message: "권한이 없습니다."
     status: 403
+  missing_token:
+    code: 40300002
+    message: "토큰이 존재하지 않습니다."
+    status: 403
 
   # 사용자 관리
   user_not_found:
