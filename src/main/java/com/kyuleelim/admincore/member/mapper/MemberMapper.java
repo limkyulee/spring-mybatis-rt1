@@ -1,7 +1,6 @@
 package com.kyuleelim.admincore.member.mapper;
 
 import com.kyuleelim.admincore.member.domain.Member;
-import com.kyuleelim.admincore.member.dto.MemberListResDto;
 import com.kyuleelim.admincore.member.dto.MemberLogin;
 import com.kyuleelim.admincore.member.dto.MemberSave;
 import org.apache.ibatis.annotations.Mapper;
