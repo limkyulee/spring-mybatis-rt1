@@ -81,15 +81,13 @@ public class MemberController {
         LoginInfo loginInfo = new LoginInfo();
 
         // JWT 토큰 발행 후 셋팅
-        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRole().toString());
+        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoleNm().toString());
         loginInfo.setToken(jwtToken);
 
         // 로그인 ID 셋팅
-        String id = member.getId().toString();
+        String id = member.getMemberId().toString();
         loginInfo.setId(id);
 
         return new CmmResponseEntity<>(new CmmResponse<>(loginInfo), HttpStatus.OK);
     }
-
-
 }
