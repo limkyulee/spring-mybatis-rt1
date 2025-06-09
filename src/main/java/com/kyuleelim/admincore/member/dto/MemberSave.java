@@ -12,12 +12,12 @@ import org.apache.ibatis.type.Alias;
 public class MemberSave {
     @NotBlank
     @Size(max = 20)
-    private String username;
+    private String userNm;
     @NotBlank
     @Email
     private String email;
     @NotBlank
     @Size(max = 20)
     private String password;
-    private Role role = Role.USER;
+    private Role roleNm = Role.USER;
 }

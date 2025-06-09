@@ -4,7 +4,9 @@ import java.net.http.WebSocket;
 
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -25,6 +27,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         log.info("WebSocketConfig init");
     }
 
+    @Autowired
+    private WebSocketAuthChannelInterceptor authInterceptor;
+
+    /**
+     * @Method Name configureClientInboundChannel
+     * @Description Interceptor 에서 등록한 STOMP 메세지 감지, Principle 주입
+     * 클라이언트에서 서버로 들어가는 메세지를 가로챔
+     * @param registration
+     */
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(authInterceptor);
+    }
 
     /**
      * @Method Name configureMessageBroker
@@ -51,4 +66,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*")
                 .withSockJS(); // 브라우저 호환성 지원
     }
+
+
 }

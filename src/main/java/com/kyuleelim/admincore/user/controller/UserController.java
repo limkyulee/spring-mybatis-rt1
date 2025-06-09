@@ -53,7 +53,7 @@ public class UserController {
     @Operation(summary = "사용자관리 상세 조회", description = "사용자관리 상세 조회")
     @PostMapping("/detail")
     public CmmResponseEntity<User> findById(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
-        User result = userService.findById(userReqDto.getId());
+        User result = userService.findById(userReqDto.getUserId());
 
         return new CmmResponseEntity<>(new CmmResponse<>(result), HttpStatus.OK);
     }
@@ -95,7 +95,7 @@ public class UserController {
     @Operation(summary = "사용자관리 삭제", description = "사용자관리 삭제")
     @PostMapping("/delete")
     public CmmResponseEntity<Long> deleteUser(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
-        Long id = userReqDto.getId();
+        Long id = userReqDto.getUserId();
         userService.deleteUser(id);
 
         return new CmmResponseEntity<>(new CmmResponse<>(id), HttpStatus.OK);

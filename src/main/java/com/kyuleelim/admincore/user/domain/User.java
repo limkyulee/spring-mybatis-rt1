@@ -8,8 +8,8 @@ import org.apache.ibatis.type.Alias;
 @Data
 @Alias("User")
 public class User {
-    private Long id;
-    private String username;
+    private Long userId;
+    private String userNm;
     private String password;
     private String email;
     private String useYn;

@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
      * @return 사용자 수정여부 (true/false)
      */
     public boolean updateUser(UserReqDto userReqDto) {
-        if (!userMapper.existUserById(userReqDto.getId())) {
+        if (!userMapper.existUserById(userReqDto.getUserId())) {
             throw new BizException("user_not_found");
         }
 
