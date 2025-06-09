@@ -7,8 +7,6 @@ import org.apache.ibatis.type.Alias;
 
 @Data
 @Alias("Member")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Member {
     private Long id;
     private String username;

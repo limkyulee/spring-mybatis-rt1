@@ -1,8 +1,6 @@
 package com.kyuleelim.admincore.member.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author limkyulee
@@ -10,8 +8,6 @@ import lombok.NoArgsConstructor;
  * @see Login Info Domain
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class LoginInfo {
     private String token;
     private String id;

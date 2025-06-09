@@ -5,9 +5,9 @@ import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
 import com.kyuleelim.admincore.member.domain.LoginInfo;
 import com.kyuleelim.admincore.member.domain.Member;
-import com.kyuleelim.admincore.member.dto.MemberListResDto;
-import com.kyuleelim.admincore.member.dto.MemberLoginReqDto;
-import com.kyuleelim.admincore.member.dto.MemberSaveReqDto;
+import com.kyuleelim.admincore.member.dto.MemberList;
+import com.kyuleelim.admincore.member.dto.MemberLogin;
+import com.kyuleelim.admincore.member.dto.MemberSave;
 import com.kyuleelim.admincore.member.service.MemberService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0 2025.04.27
  * @see 회원 관리 Controller
  */
-@RestController
 @Tag(name = "회원 관리", description = "")
 @RequestMapping("/api/auth")
+@RestController
 public class MemberController {
 
     @Autowired
@@ -34,49 +34,62 @@ public class MemberController {
     private JwtTokenProvider jwtTokenProvider;
 
     /**
+     * @Method Name retrieveMemberList
+     * @Description 회원 목록 조회
+     * @return 회원 목록, 총 건 수
+     */
+    @Operation(summary = "회원 목록 조회", description = "회원 목록 조회")
+    @PostMapping("/retrieveMemberList")
+    @ResponseBody
+    public CmmResponseEntity<MemberList> retrieveMemberList() {
+        // 회원 목록 조회 (Service 호출)
+        MemberList memberList = memberService.retrieveMemberList();
+
+        return new CmmResponseEntity<>(new CmmResponse<>(memberList), HttpStatus.OK);
+    }
+
+    /**
      * @Method Name join
      * @Description 회원가입
-     * @param memberSaveReqDto
-     * @return 회원가입 요청 정보
+     * @param memberSave
+     * @return 회원가입 성공 여부
      */
     @Operation(summary = "회원가입", description = "회원가입")
     @PostMapping("/join")
-    public CmmResponseEntity<Member> join(@RequestBody @Validated MemberSaveReqDto memberSaveReqDto) {
-        Member member = memberService.join(memberSaveReqDto);
+    @ResponseBody
+    public CmmResponseEntity<Void> join(@RequestBody @Validated MemberSave memberSave) {
+        // 회원가입 실행 (Service 호출)
+        memberService.createMember(memberSave);
 
-       return new CmmResponseEntity<>(new CmmResponse<>(member), HttpStatus.OK);
+        return new CmmResponseEntity<>(new CmmResponse<>(), HttpStatus.OK);
     }
 
     /**
      * @Method Name login
      * @Description 로그인
-     * @param memberLoginReqDto
-     * @return 로그인 요청 정보
+     * @param memberLogin
+     * @return 로그인 정보, JWT 토큰
      */
     @Operation(summary = "로그인", description = "로그인")
     @PostMapping("/login")
-    public CmmResponseEntity<LoginInfo> login(@RequestBody @Validated MemberLoginReqDto memberLoginReqDto){
-        // email, password 검증
-        Member member = memberService.login(memberLoginReqDto);
-        // 일차할 경우 access 토큰 발행
-        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRole().toString());
+    @ResponseBody
+    public CmmResponseEntity<LoginInfo> login(@RequestBody @Validated MemberLogin memberLogin){
+        // 사용자 로그인 요청 (Service 호출)
+        Member member = memberService.login(memberLogin);
+
+        // 로그인 정보 셋팅
         LoginInfo loginInfo = new LoginInfo();
+
+        // JWT 토큰 발행 후 셋팅
+        String jwtToken = jwtTokenProvider.createToken(member.getEmail(), member.getRole().toString());
         loginInfo.setToken(jwtToken);
-        loginInfo.setId(member.getId().toString());
+
+        // 로그인 ID 셋팅
+        String id = member.getId().toString();
+        loginInfo.setId(id);
 
         return new CmmResponseEntity<>(new CmmResponse<>(loginInfo), HttpStatus.OK);
     }
 
-    /**
-     * @Method Name getMemberList
-     * @Description 회원 목록 조회
-     * @return 회원 목록
-     */
-    @Operation(summary = "회원 목록 조회", description = "회원 목록 조회")
-    @GetMapping("/members")
-    public CmmResponseEntity<MemberListResDto> getMemberList() {
-        MemberListResDto memberList = memberService.findAll();
 
-        return new CmmResponseEntity<>(new CmmResponse<>(memberList), HttpStatus.OK);
-    }
 }

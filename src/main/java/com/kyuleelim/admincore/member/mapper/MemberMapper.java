@@ -2,14 +2,17 @@ package com.kyuleelim.admincore.member.mapper;
 
 import com.kyuleelim.admincore.member.domain.Member;
 import com.kyuleelim.admincore.member.dto.MemberListResDto;
+import com.kyuleelim.admincore.member.dto.MemberLogin;
+import com.kyuleelim.admincore.member.dto.MemberSave;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface MemberMapper {
-    void save(Member member);
-    Optional<Member> findByEmail(String email);
-    List<Member> findAll();
+    List<Member> retrieveMemberList();
+    int retrieveMemberCount();
+    Member retrieveMember(MemberSave memberSave);
+    int createMember(MemberSave memberSave);
+    Member retrieveMemberByEmail(MemberLogin memberLogin);
 }
