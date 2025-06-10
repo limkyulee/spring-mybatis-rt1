@@ -5,8 +5,8 @@ import com.kyuleelim.admincore.common.domain.DetailGroup;
 import com.kyuleelim.admincore.common.domain.UpdateGroup;
 import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
-import com.kyuleelim.admincore.common.dto.response.PageResponse;
 import com.kyuleelim.admincore.user.domain.User;
+import com.kyuleelim.admincore.user.domain.UserList;
 import com.kyuleelim.admincore.user.dto.UserListReqDto;
 import com.kyuleelim.admincore.user.dto.UserReqDto;
 import com.kyuleelim.admincore.user.service.UserService;
@@ -22,82 +22,86 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0 2025.04.27
  * @see 사용자 관리 Controller
  */
-@RestController
-@Tag(name = "사용자 관리", description = "")
+@Tag(name = "사용자 관리")
 @RequestMapping("/api/users")
+@RestController
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     /**
-     * @Method Name findAll
+     * @Method Name retrieveUserList
      * @Description 사용자 목록 조회
      * @param userListReqDto
-     * @return 사용자 목록
+     * @return 사용자 목록, 총 건 수
      */
     @Operation(summary = "사용자관리 목록 조회", description = "사용자관리 목록 조회")
-    @PostMapping("/list")
-    public CmmResponseEntity<PageResponse<User>> findAll(@RequestBody UserListReqDto userListReqDto) {
-        PageResponse<User> result = userService.findAll(userListReqDto);
+    @PostMapping("/retrieveUserList")
+    public CmmResponseEntity<UserList> retrieveUserList(@RequestBody UserListReqDto userListReqDto) {
+        // 사용자 목록 조회 (Service 호출)
+        UserList result = userService.retrieveUserList(userListReqDto);
 
         return new CmmResponseEntity<>(new CmmResponse<>(result), HttpStatus.OK);
     }
 
     /**
-     * @Method Name findById
+     * @Method Name retrieveUser
      * @Description 사용자 상세 조회
      * @param userReqDto
-     * @return 사용자 상세 조회 값
+     * @return 사용자 상세
      */
     @Operation(summary = "사용자관리 상세 조회", description = "사용자관리 상세 조회")
-    @PostMapping("/detail")
-    public CmmResponseEntity<User> findById(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
-        User result = userService.findById(userReqDto.getUserId());
+    @PostMapping("/retrieveUser")
+    public CmmResponseEntity<User> retrieveUser(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
+        // 사용자 상세 조회 (Service 호출)
+        User user = userService.retrieveUser(userReqDto);
 
-        return new CmmResponseEntity<>(new CmmResponse<>(result), HttpStatus.OK);
+        return new CmmResponseEntity<>(new CmmResponse<>(user), HttpStatus.OK);
     }
 
     /**
-     * @Method Name insertUser
+     * @Method Name createUser
      * @Description 사용자 등록
      * @param userReqDto
-     * @return 사용자 등록 요청 값
+     * @return 사용자 등록 성공 여부
      */
     @Operation(summary = "사용자관리 등록", description = "사용자관리 등록")
-    @PostMapping("/insert")
-    public CmmResponseEntity<UserReqDto> insertUser(@RequestBody @Validated(CreateGroup.class) UserReqDto userReqDto) {
-        userService.insertUser(userReqDto);
+    @PostMapping("/create")
+    public CmmResponseEntity<Void> createUser(@RequestBody @Validated(CreateGroup.class) UserReqDto userReqDto) {
+        // 사용자 등록 요청 (Service 호출)
+        userService.createUser(userReqDto);
 
-        return new CmmResponseEntity<>(new CmmResponse<>(userReqDto), HttpStatus.OK);
+        return new CmmResponseEntity<>(new CmmResponse<>(), HttpStatus.OK);
     }
 
     /**
      * @Method Name updateUser
      * @Description 사용자 수정
      * @param userReqDto
-     * @return 사용자 수정 요청 값
+     * @return 사용자 수정 성공 여부
      */
     @Operation(summary = "사용자관리 업데이트", description = "사용자관리 업데이트")
     @PostMapping("/update")
-    public CmmResponseEntity<UserReqDto> updateUser(@RequestBody @Validated(UpdateGroup.class) UserReqDto userReqDto) {
+    public CmmResponseEntity<Void> updateUser(@RequestBody @Validated(UpdateGroup.class) UserReqDto userReqDto) {
+        // 사용자 수정 요청 (Service 호출)
         userService.updateUser(userReqDto);
 
-        return new CmmResponseEntity<>(new CmmResponse<>(userReqDto), HttpStatus.OK);
+        return new CmmResponseEntity<>(new CmmResponse<>(), HttpStatus.OK);
     }
 
     /**
      * @Method Name deleteUser
      * @Description 사용자 삭제
      * @param userReqDto
-     * @return 사용자 삭제 요청 값
+     * @return 사용자 삭제 성공 여부
      */
     @Operation(summary = "사용자관리 삭제", description = "사용자관리 삭제")
     @PostMapping("/delete")
-    public CmmResponseEntity<Long> deleteUser(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
-        Long id = userReqDto.getUserId();
-        userService.deleteUser(id);
+    public CmmResponseEntity<Void> deleteUser(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
+        // 사용자 삭제 요청 (Service 호출)
+        userService.deleteUser(userReqDto);
 
-        return new CmmResponseEntity<>(new CmmResponse<>(id), HttpStatus.OK);
+        return new CmmResponseEntity<>(new CmmResponse<>(), HttpStatus.OK);
     }
 }
