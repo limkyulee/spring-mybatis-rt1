@@ -3,8 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kyuleelim.admincore.user.mapper.UserMapper">
 
-    <select id="findById" parameterType="Long" resultType="User">
-        -- UserMapper.findById
+    <select id="retrieveUser" parameterType="UserReqDto" resultType="User">
+        -- UserMapper.retrieveUser
       SELECT USER_ID
            , USER_NM
            , EMAIL
@@ -14,8 +14,8 @@
          AND USE_YN = 'Y'
     </select>
 
-    <select id="findAll" parameterType="UserListReqDto" resultType="User">
-        -- UserMapper.findAll
+    <select id="retrieveUserList" parameterType="UserListReqDto" resultType="User">
+        -- UserMapper.retrieveUserList
         SELECT *
           FROM USER
         <where>
@@ -38,8 +38,8 @@
        OFFSET #{offset}
     </select>
 
-    <select id="countAll" parameterType="UserListReqDto" resultType="int">
-        -- UserMapper.countAll
+    <select id="retrieveUserListCount" resultType="int" parameterType="UserListReqDto">
+        -- UserMapper.retrieveUserListCount
         SELECT COUNT(*)
           FROM USER
         <where>
@@ -59,8 +59,8 @@
         </where>
     </select>
 
-    <insert id="insertUser" parameterType="UserReqDto" useGeneratedKeys="true" keyProperty="id">
-        -- UserMapper.insertUser
+    <insert id="createUser" parameterType="UserReqDto" useGeneratedKeys="true" keyProperty="id">
+        -- UserMapper.createUser
         INSERT INTO USER
              ( USER_NM
              , PASSWORD
@@ -100,22 +100,11 @@
         WHERE USER_ID = #{userId}
     </update>
 
-    <delete id="deleteUser" parameterType="Long">
+    <delete id="deleteUser" parameterType="UserReqDto">
         -- UserMapper.deleteUser
-        UPDATE USER
-           SET USER_YN = 'N'
-             , UPDATED_AT = NOW()
+        DELETE FROM USER
          WHERE USER_ID = #{userId}
     </delete>
-
-    <select id="existUserById" parameterType="Long" resultType="boolean">
-        -- UserMapper.existsUserById
-        SELECT CASE WHEN COUNT(1) > 0 THEN TRUE
-                    ELSE FALSE
-                    END
-          FROM USER
-         WHERE USER_ID = #{userId}
-    </select>
 
   <select id="existUserByEmail" parameterType="String" resultType="boolean">
     -- UserMapper.existsUserByEmail

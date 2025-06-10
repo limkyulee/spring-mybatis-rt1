@@ -6,16 +6,15 @@ import com.kyuleelim.admincore.user.dto.UserReqDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
-    List<User> findAll(UserListReqDto searchCondition);
-    int countAll(UserListReqDto searchCondition);
-    Optional<User> findById(Long id);
-    int insertUser(UserReqDto user);
-    int updateUser(UserReqDto user);
-    int deleteUser(Long id);
-    boolean existUserById(Long id);
+    List<User> retrieveUserList(UserListReqDto userListReqDto);
+    int retrieveUserListCount(UserListReqDto userListReqDto);
+    User retrieveUser(UserReqDto userReqDto);
+    int createUser(UserReqDto userReqDto);
+    int updateUser(UserReqDto userReqDto);
+    int deleteUser(UserReqDto userReqDto);
+
     boolean existUserByEmail(String email);
 }
