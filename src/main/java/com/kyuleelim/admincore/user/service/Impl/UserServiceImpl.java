@@ -1,8 +1,8 @@
 package com.kyuleelim.admincore.user.service.Impl;
 
-import com.kyuleelim.admincore.common.dto.response.PageResponse;
 import com.kyuleelim.admincore.common.exception.BizException;
 import com.kyuleelim.admincore.user.domain.User;
+import com.kyuleelim.admincore.user.domain.UserList;
 import com.kyuleelim.admincore.user.dto.UserListReqDto;
 import com.kyuleelim.admincore.user.dto.UserReqDto;
 import com.kyuleelim.admincore.user.mapper.UserMapper;
@@ -18,94 +18,98 @@ import org.springframework.transaction.annotation.Transactional;
  * @see 사용자 관리 Service Impl
  */
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
 
     /**
-     * @Method Name findAll
+     * @Method Name retrieveUserList
      * @Description 사용자 목록 조회
-     * @param searchCondition
+     * @param userListReqDto
      * @return 사용자 목록
      */
-    public PageResponse<User> findAll(UserListReqDto searchCondition) {
-        List<User> userList = userMapper.findAll(searchCondition);
-        int totalCount = userMapper.countAll(searchCondition);
+    @Transactional(readOnly = true)
+    @Override
+    public UserList retrieveUserList(UserListReqDto userListReqDto) {
+        // 사용자 목록 조회 요청 (Dao 호출)
+        List<User> list = userMapper.retrieveUserList(userListReqDto);
+        // 사용자 목록 셋팅
+        UserList userList = new UserList();
+        userList.setList(list);
+        // 사용자 목록 총 건 수 조회 (Dao 호출)
+        int totalCount = userMapper.retrieveUserListCount(userListReqDto);
+        // 사용자 목록 총 건 수 셋팅
+        userList.setTotalCount(totalCount);
 
-        return new PageResponse<>(userList, totalCount, searchCondition.getCurrentPage(), searchCondition.getLimit());
+        return userList;
     }
 
     /**
-     * @Method Name countAll
-     * @Description 전체 사용자 수 조회
-     * @param searchCondition
-     * @return 전체 사용자 수
-     */
-    private int countAll(UserListReqDto searchCondition) {
-        return userMapper.countAll(searchCondition);
-    }
-
-    /**
-     * @Method Name findById
+     * @Method Name retrieveUser
      * @Description 사용자 상세 조회
-     * @param id
+     * @param userReqDto
      * @return User
      */
-    public User findById(Long id) {
-        return userMapper.findById(id).orElseThrow(() -> new BizException("user_not_found"));
+    @Transactional(readOnly = true)
+    @Override
+    public User retrieveUser(UserReqDto userReqDto) {
+
+        // 사용자 상세 조회 요청 (Dao 호출)
+        return userMapper.retrieveUser(userReqDto);
     }
 
     /**
-     * @Method Name insertUser
+     * @Method Name createUser
      * @Description 사용자 등록
      * @param userReqDto
-     * @return 사용자 등록여부 (true/false)
      */
-    public boolean insertUser(UserReqDto userReqDto) {
+    @Transactional
+    @Override
+    public void createUser(UserReqDto userReqDto) {
+        // 사용자 이메일 중복 체크 예외 처리
         if(userMapper.existUserByEmail(userReqDto.getEmail())){
-            throw new BizException("duplicate_user");
+            throw new BizException("DUPLICATE_EMAIL");
         }
 
-        return isSuccess(userMapper.insertUser(userReqDto));
+        // 사용자 등록 요청 (Dao 호출)
+        int affectedRow = userMapper.createUser(userReqDto);
+        // 사용자 등록 실패 예외 처리
+        if(affectedRow < 1) {
+            throw new BizException("FAIL_ADD", List.of("사용자"));
+        }
+
     }
 
     /**
      * @Method Name updateUser
      * @Description 사용자 수정
      * @param userReqDto
-     * @return 사용자 수정여부 (true/false)
      */
-    public boolean updateUser(UserReqDto userReqDto) {
-        if (!userMapper.existUserById(userReqDto.getUserId())) {
-            throw new BizException("user_not_found");
+    @Transactional
+    @Override
+    public void updateUser(UserReqDto userReqDto) {
+        // 사용자 수정 요청 (Dao 호출)
+        int affectedRow = userMapper.updateUser(userReqDto);
+        // 사용자 수정 실패 예외 처리
+        if(affectedRow < 1) {
+            throw new BizException("FAIL_UPDATE", List.of("사용자"));
         }
-
-        return isSuccess(userMapper.updateUser(userReqDto));
     }
 
     /**
      * @Method Name deleteUser
      * @Description 사용자 삭제
-     * @param id
-     * @return 사용자 삭제여부 (true/false)
+     * @param userReqDto
      */
-    public boolean deleteUser(Long id) {
-        if (!userMapper.existUserById(id)) {
-            throw new BizException("user_not_found");
+    @Transactional
+    @Override
+    public void deleteUser(UserReqDto userReqDto) {
+        int affectedRow = userMapper.deleteUser(userReqDto);
+
+        if(affectedRow < 1) {
+            throw new BizException("FAIL_DELETE", List.of("사용자"));
         }
-
-        return isSuccess(userMapper.deleteUser(id));
     }
 
-    /**
-     * @Method Name isSuccess
-     * @Description 등록, 수정, 삭제 성공 여부 반환
-     * @param affectedRows
-     * @return 성공 여부
-     */
-    private static boolean isSuccess(int affectedRows){
-        return affectedRows > 0;
-    }
 }
