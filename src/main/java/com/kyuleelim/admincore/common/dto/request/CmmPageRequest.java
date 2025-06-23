@@ -2,16 +2,11 @@ package com.kyuleelim.admincore.common.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kyuleelim.admincore.common.enums.CmmConstant;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.Optional;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@JsonInclude(value = JsonInclude.Include.NON_ABSENT, content = JsonInclude.Include.NON_EMPTY)
+@Data
 public class CmmPageRequest {
 
     private Integer currentPage = CmmConstant.DEFAULT_CURRENT_PAGE;

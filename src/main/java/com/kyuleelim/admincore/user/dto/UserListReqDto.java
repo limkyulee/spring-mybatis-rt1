@@ -9,4 +9,6 @@ import org.apache.ibatis.type.Alias;
 public class UserListReqDto extends CmmPageRequest {
     private String keyword;
     private String searchType;
+    private String sidx;
+    private String sord;
 }

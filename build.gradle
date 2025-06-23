@@ -51,6 +51,9 @@ dependencies {
 
 	// webSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// Excel XLSX 파일 생성용
+	implementation 'org.apache.poi:poi-ooxml:5.4.0'
 }
 
 tasks.named('test') {

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kyuleelim.admincore.user.mapper.UserMapper">
 
     <select id="retrieveUser" parameterType="UserReqDto" resultType="User">
-        -- UserMapper.retrieveUser
+        -- userMapper.retrieveUser
       SELECT USER_ID
            , USER_NM
            , EMAIL
@@ -15,52 +14,71 @@
     </select>
 
     <select id="retrieveUserList" parameterType="UserListReqDto" resultType="User">
-        -- UserMapper.retrieveUserList
-        SELECT *
+        -- userMapper.retrieveUserList
+        SELECT USER_ID
+             , USER_NM
+             , EMAIL
           FROM USER
-        <where>
-            USE_YN = 'Y'
-            <if test="searchType != null and keyword != null and keyword != ''">
+         WHERE USE_YN = 'Y'
+        <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+            <choose>
+                <when test="searchType == 'username'">
+                    AND USER_NM LIKE CONCAT(#{keyword}, '%')
+                </when>
+                <when test="searchType == 'email'">
+                    AND EMAIL LIKE CONCAT(#{keyword}, '%')
+                </when>
+            </choose>
+        </if>
+        <choose>
+            <when test="sidx == null or sidx == ''">
+                ORDER BY USER_ID
+            </when>
+            <otherwise>
                 <choose>
-                    <when test="searchType == 'username'">
-                        AND USER_NM
-                       LIKE CONCAT(#{keyword}, '%')
+                    <when test="sidx == 'userId'">
+                        ORDER BY USER_ID
                     </when>
-                    <when test="searchType == 'email'">
-                        AND EMAIL
-                       LIKE CONCAT(#{keyword}, '%')
+                    <when test="sidx == 'userNm'">
+                        ORDER BY USER_NM
                     </when>
+                    <otherwise>
+                        ORDER BY EMAIL
+                    </otherwise>
                 </choose>
-            </if>
-        </where>
-        ORDER BY USER_ID DESC
-        LIMIT #{limit}
-       OFFSET #{offset}
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sord != null or sord == ''">ASC</when>
+            <otherwise>
+                <choose>
+                    <when test="sord == 'asc'">ASC</when>
+                    <otherwise>DESC</otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        LIMIT #{limit} #{offset}
     </select>
 
     <select id="retrieveUserListCount" resultType="int" parameterType="UserListReqDto">
-        -- UserMapper.retrieveUserListCount
+        -- userMapper.retrieveUserListCount
         SELECT COUNT(*)
           FROM USER
-        <where>
-            USE_YN = 'Y'
-            <if test="searchType != null and keyword != null and keyword != ''">
-                <choose>
-                    <when test="searchType == 'username'">
-                        AND USER_NM
-                       LIKE CONCAT(#{keyword}, '%')
-                    </when>
-                    <when test="searchType == 'email'">
-                        AND EMAIL
-                       LIKE CONCAT(#{keyword}, '%')
-                    </when>
-                </choose>
-            </if>
-        </where>
+         WHERE USE_YN = 'Y'
+         <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+             <choose>
+                 <when test="searchType == 'username'">
+                     AND USER_NM LIKE CONCAT(#{keyword}, '%')
+                 </when>
+                 <when test="searchType == 'email'">
+                     AND EMAIL LIKE CONCAT(#{keyword}, '%')
+                 </when>
+             </choose>
+         </if>
     </select>
 
     <insert id="createUser" parameterType="UserReqDto" useGeneratedKeys="true" keyProperty="id">
-        -- UserMapper.createUser
+        -- userMapper.createUser
         INSERT INTO USER
              ( USER_NM
              , PASSWORD
@@ -78,40 +96,28 @@
     </insert>
     
     <update id="updateUser" parameterType="UserReqDto">
-        -- UserMapper.updatedUser
+        -- userMapper.updatedUser
         UPDATE USER
-        <set>
-            <trim suffixOverrides=",">
-                <if test="username !=null">
-                    USER_NM = #{userNm},
-                </if>
-                <if test="password != null">
-                    PASSWORD = #{password},
-                </if>
-                <if test="email != null">
-                    EMAIL = #{email},
-                </if>
-                <if test="useYn != null">
-                    USE_YN = #{useYn},
-                </if>
-                    UPDATED_AT = NOW()
-            </trim>
-        </set>
-        WHERE USER_ID = #{userId}
+           SET USER_NM = #{userNm}
+             , PASSWORD = #{password}
+             , EMAIL = #{email}
+             , USE_YN = #{useYn}
+             , UPDATED_AT = CURRENT_TIMESTAMP
+         WHERE USER_ID = #{userId}
     </update>
 
     <delete id="deleteUser" parameterType="UserReqDto">
-        -- UserMapper.deleteUser
+        -- userMapper.deleteUser
         DELETE FROM USER
          WHERE USER_ID = #{userId}
     </delete>
 
   <select id="existUserByEmail" parameterType="String" resultType="boolean">
-    -- UserMapper.existsUserByEmail
+    -- userMapper.existsUserByEmail
     SELECT CASE WHEN COUNT(1) > 0 THEN TRUE
                 ELSE FALSE
              END
-    FROM USER
-    WHERE EMAIL = #{email}
+      FROM USER
+     WHERE EMAIL = #{email}
   </select>
 </mapper>
