@@ -57,7 +57,27 @@
                 </choose>
             </otherwise>
         </choose>
-        LIMIT #{limit} #{offset}
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="retrieveAllUserList" parameterType="UserListReqDto" resultType="User">
+        -- userMapper.retrieveAllUserList
+        SELECT USER_ID
+        , USER_NM
+        , EMAIL
+        FROM USER
+        WHERE USE_YN = 'Y'
+        <if test="searchType != null and searchType != '' and keyword != null and keyword != ''">
+            <choose>
+                <when test="searchType == 'username'">
+                    AND USER_NM LIKE CONCAT(#{keyword}, '%')
+                </when>
+                <when test="searchType == 'email'">
+                    AND EMAIL LIKE CONCAT(#{keyword}, '%')
+                </when>
+            </choose>
+        </if>
+        ORDER BY USER_ID
     </select>
 
     <select id="retrieveUserListCount" resultType="int" parameterType="UserListReqDto">

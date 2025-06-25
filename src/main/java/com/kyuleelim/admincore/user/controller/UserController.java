@@ -12,6 +12,7 @@ import com.kyuleelim.admincore.user.dto.UserReqDto;
 import com.kyuleelim.admincore.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -103,5 +104,19 @@ public class UserController {
         userService.deleteUser(userReqDto);
 
         return new CmmResponseEntity<>(new CmmResponse<>(), HttpStatus.OK);
+    }
+
+    /**
+     * @Method downloadUserList
+     * @Description 사용자 목록 `엑셀 다운로드
+     * @param userListReqDto
+     * @param response
+     * @return
+     */
+    @Operation(summary = "엑셀 다운로드", description = "엑셀 다운로드")
+    @PostMapping("/download/userList")
+    public void downloadUserList(@RequestBody UserListReqDto userListReqDto, HttpServletResponse response) {
+        // 엑셀 다운로드 요청 (Service 호출)
+        userService.downloadUserList(userListReqDto, response);
     }
 }

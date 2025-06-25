@@ -1,10 +1,10 @@
 package com.kyuleelim.admincore.user.service;
 
-import com.kyuleelim.admincore.common.dto.response.PageResponse;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.domain.UserList;
 import com.kyuleelim.admincore.user.dto.UserListReqDto;
 import com.kyuleelim.admincore.user.dto.UserReqDto;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface UserService {
     UserList retrieveUserList(UserListReqDto userListReqDto);
@@ -12,4 +12,5 @@ public interface UserService {
     void createUser(UserReqDto userReqDto);
     void updateUser(UserReqDto userReqDto);
     void deleteUser(UserReqDto userReqDto);
+    void downloadUserList(UserListReqDto userListReqDto, HttpServletResponse response);
 }

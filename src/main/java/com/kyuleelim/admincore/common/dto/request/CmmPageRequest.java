@@ -1,5 +1,6 @@
 package com.kyuleelim.admincore.common.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.kyuleelim.admincore.common.enums.CmmConstant;
 import lombok.Data;
@@ -12,7 +13,7 @@ public class CmmPageRequest {
     private Integer currentPage = CmmConstant.DEFAULT_CURRENT_PAGE;
     private Integer limit = CmmConstant.DEFAULT_LIMIT;
 
-    @JsonInclude
+    @JsonIgnore
     public Integer getOffset() {
         return (Optional.ofNullable(currentPage).orElse(CmmConstant.DEFAULT_CURRENT_PAGE) - 1) * Optional.ofNullable(limit).orElse(CmmConstant.DEFAULT_LIMIT);
     }

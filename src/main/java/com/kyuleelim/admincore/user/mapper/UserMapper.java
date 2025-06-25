@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     List<User> retrieveUserList(UserListReqDto userListReqDto);
+    List<User> retrieveAllUserList(UserListReqDto userListReqDto);
     int retrieveUserListCount(UserListReqDto userListReqDto);
     User retrieveUser(UserReqDto userReqDto);
     int createUser(UserReqDto userReqDto);

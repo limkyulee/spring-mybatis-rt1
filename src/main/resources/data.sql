@@ -5,7 +5,10 @@ INSERT INTO USER
      , EMAIL
      , USE_YN )
 VALUES
-     ('admin', 'admin1234', 'admin@example.com', 'Y');
+     ('admin', 'admin01!', 'admin@example.com', 'Y'),
+     ('임규리', 'kyulee01!', 'example@example.com', 'Y'),
+     ('테스트01', 'test01!', 'test01@example.com', 'Y'),
+     ('테스트02', 'test02!', 'test02@example.com', 'N');
 
 -- MEMBER
 INSERT INTO MEMBER

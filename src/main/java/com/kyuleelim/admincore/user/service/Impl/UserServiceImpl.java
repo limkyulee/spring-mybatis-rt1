@@ -1,13 +1,19 @@
 package com.kyuleelim.admincore.user.service.Impl;
 
 import com.kyuleelim.admincore.common.exception.BizException;
+import com.kyuleelim.admincore.common.utils.ExcelUtil;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.domain.UserList;
 import com.kyuleelim.admincore.user.dto.UserListReqDto;
 import com.kyuleelim.admincore.user.dto.UserReqDto;
 import com.kyuleelim.admincore.user.mapper.UserMapper;
 import com.kyuleelim.admincore.user.service.UserService;
+
 import java.util.List;
+import java.util.Map;
+
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @version 1.0, 5/4/25
  * @see 사용자 관리 Service Impl
  */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -112,4 +119,25 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * @Method downloadUserList
+     * @Description 엑셀 다운로드
+     * @param userListReqDto
+     * @param response
+     */
+    @Override
+    public void downloadUserList(UserListReqDto userListReqDto, HttpServletResponse response) {
+        // 다운로드할 사용자 데이터 목록 조회 (Dao 호출)
+        List<User> list = userMapper.retrieveAllUserList(userListReqDto);
+        log.info("list {}", list);
+        // 헤더 생성
+        Map<String, String> headerMap = Map.of(
+                "userNm","이름",
+                "email","이메일",
+                "useYn","사용여부"
+        );
+
+        // 엑셀 다운르도 실행
+        ExcelUtil.downloadExcel(response, "user_list",list, headerMap);
+    }
 }
