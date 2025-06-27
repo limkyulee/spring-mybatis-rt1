@@ -131,6 +131,11 @@ exception:
     message: "아이디 또는 비밀번호가 일치하지 않습니다."
     status: 400
 
+  # 엑셀 다운로드
+  FAIL_TO_DOWNLOAD_EXCEL:
+    code: 40000301
+    message: "엑셀 다운로드에 실패하였습니다."
+    status: 400
 
 
 

@@ -3,10 +3,7 @@ package com.kyuleelim.admincore.common.utils;
 import com.kyuleelim.admincore.common.exception.BizException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.ByteArrayOutputStream;
@@ -14,9 +11,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.poi.hssf.record.cf.BorderFormatting.BORDER_THIN;
 
 /**
  * ===========================================
@@ -32,6 +30,47 @@ import java.util.Map;
 public class ExcelUtil {
 
     /**
+     * @Method createHeaderStyle
+     * @Description 엑셀 기본 헤더 스타일 생성
+     * @param workbook
+     * @return 엑셀 기본 헤더 스타일
+     */
+    private static CellStyle createHeaderStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
+        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
+        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+
+        return style;
+    }
+
+    /**
+     * @Method createRowStyle
+     * @Description  열 기본 스타일 생성
+     * @param workbook
+     * @return 열 기본 스타일
+     */
+    private static CellStyle createRowStyle(Workbook workbook) {
+        CellStyle style = workbook.createCellStyle();
+
+        style.setAlignment(HorizontalAlignment.LEFT);
+        style.setVerticalAlignment(VerticalAlignment.TOP);
+        style.setBorderBottom(BorderStyle.THIN);
+        style.setBorderRight(BorderStyle.THIN);
+        style.setBorderLeft(BorderStyle.THIN);
+        style.setBorderTop(BorderStyle.THIN);
+
+        return style;
+    }
+
+
+    /**
      * @Method downloadExcel
      * @Description 엑셀 다운로드 공통 유틸
      * @param response
@@ -42,7 +81,8 @@ public class ExcelUtil {
      */
     public static <T> void downloadExcel(HttpServletResponse response, String fileName, List<T> list, Map<String, String> header) {
 
-        try(
+        try (
+                // Auto Close
                 Workbook workbook = new XSSFWorkbook(); // .xlsx 형식의 엑셀 파일을 위한 객체 생성
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream() // 엑셀 데이터를 임시로 담을 메모리 스트림
         ) {
@@ -61,6 +101,8 @@ public class ExcelUtil {
                 Cell cell = headerRow.createCell(cellIndex++);
                 // 헤더 명 (컬럼 명) 셋팅
                 cell.setCellValue(headerName);
+                // 헤더 스타일 셋팅
+                cell.setCellStyle(createHeaderStyle(workbook));
             }
 
             // 데이터 행 생성
@@ -75,7 +117,12 @@ public class ExcelUtil {
                     // DTO 객체에서 필드 값 추출
                     Object value = getFieldValue(item, fieldName);
 
+                    // 값 셋팅
                     cell.setCellValue(value != null ? value.toString() : "");
+                    // 스타일 셋팅
+                    cell.setCellStyle(createRowStyle(workbook));
+                    // 셀 너비 자동 조정 설정
+                    sheet.autoSizeColumn(cellIndex);
                 }
             }
 

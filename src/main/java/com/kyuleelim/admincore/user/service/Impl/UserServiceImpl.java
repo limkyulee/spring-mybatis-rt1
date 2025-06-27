@@ -132,9 +132,9 @@ public class UserServiceImpl implements UserService {
         log.info("list {}", list);
         // 헤더 생성
         Map<String, String> headerMap = Map.of(
+                "userId","아이디",
                 "userNm","이름",
-                "email","이메일",
-                "useYn","사용여부"
+                "email","이메일"
         );
 
         // 엑셀 다운르도 실행
