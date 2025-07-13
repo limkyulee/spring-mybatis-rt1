@@ -19,11 +19,11 @@ Spring Boot REST API for Common Admin Management (User, Member, WebSocket)
 
 ### Contents
 
-- [X] 회원가입
-- [X] 로그인/JWT 인증
-- [X] 사용자관리 CRUD
+- [X] CRUD
+- [X] Excel Download
 - [X] GlobalExceptionHandler
 - [X] BizException
+- [X] Swagger.io
 - [ ] WebSocket
-- [ ] Redis
+- [ ] Redis Template
 
