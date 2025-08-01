@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
  * @see 사용자 관리 Controller
  */
 @Tag(name = "사용자 관리")
-@RequestMapping("/api/users")
+@RequestMapping("/user")
 @RestController
 public class UserController {
 

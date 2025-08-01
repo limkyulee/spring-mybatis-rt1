@@ -6,8 +6,8 @@ spring:
     driver-class-name: org.postgresql.Driver
 
 mybatis:
-  mapper-locations: classpath:mapper/**/*.xml
-  type-aliases-package: com.kyuleelim.admincore.domain
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.kyuleelim.admincore
   configuration:
     map-underscore-to-camel-case: true
 
@@ -17,5 +17,5 @@ springdoc:
     default-consumes-media-type: application/json # 소비 미디어 타입
     default-produces-media-type: application/json # 생산 미디어 타입
     servers:
-      - url: http://localhost:8080
+      - url: http://localhost:8080/api
         description: 로컬 개발 서버
