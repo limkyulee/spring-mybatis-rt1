@@ -6,5 +6,4 @@ package com.kyuleelim.admincore.common.domain;
  * @see DetailGroup Interface
  */
 public interface DetailGroup {
-
 }

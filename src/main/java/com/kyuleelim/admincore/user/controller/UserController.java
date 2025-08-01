@@ -7,8 +7,8 @@ import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.domain.UserList;
-import com.kyuleelim.admincore.user.dto.UserListReqDto;
-import com.kyuleelim.admincore.user.dto.UserReqDto;
+import com.kyuleelim.admincore.user.dto.UserListRequest;
+import com.kyuleelim.admincore.user.dto.UserRequest;
 import com.kyuleelim.admincore.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,7 +39,7 @@ public class UserController {
      */
     @Operation(summary = "사용자관리 목록 조회", description = "사용자관리 목록 조회")
     @PostMapping("/retrieveUserList")
-    public CmmResponseEntity<UserList> retrieveUserList(@RequestBody UserListReqDto userListReqDto) {
+    public CmmResponseEntity<UserList> retrieveUserList(@RequestBody UserListRequest userListReqDto) {
         // 사용자 목록 조회 (Service 호출)
         UserList result = userService.retrieveUserList(userListReqDto);
 
@@ -54,7 +54,7 @@ public class UserController {
      */
     @Operation(summary = "사용자관리 상세 조회", description = "사용자관리 상세 조회")
     @PostMapping("/retrieveUser")
-    public CmmResponseEntity<User> retrieveUser(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
+    public CmmResponseEntity<User> retrieveUser(@RequestBody @Validated(DetailGroup.class) UserRequest userReqDto) {
         // 사용자 상세 조회 (Service 호출)
         User user = userService.retrieveUser(userReqDto);
 
@@ -69,7 +69,7 @@ public class UserController {
      */
     @Operation(summary = "사용자관리 등록", description = "사용자관리 등록")
     @PostMapping("/create")
-    public CmmResponseEntity<Void> createUser(@RequestBody @Validated(CreateGroup.class) UserReqDto userReqDto) {
+    public CmmResponseEntity<Void> createUser(@RequestBody @Validated(CreateGroup.class) UserRequest userReqDto) {
         // 사용자 등록 요청 (Service 호출)
         userService.createUser(userReqDto);
 
@@ -84,7 +84,7 @@ public class UserController {
      */
     @Operation(summary = "사용자관리 업데이트", description = "사용자관리 업데이트")
     @PostMapping("/update")
-    public CmmResponseEntity<Void> updateUser(@RequestBody @Validated(UpdateGroup.class) UserReqDto userReqDto) {
+    public CmmResponseEntity<Void> updateUser(@RequestBody @Validated(UpdateGroup.class) UserRequest userReqDto) {
         // 사용자 수정 요청 (Service 호출)
         userService.updateUser(userReqDto);
 
@@ -99,7 +99,7 @@ public class UserController {
      */
     @Operation(summary = "사용자관리 삭제", description = "사용자관리 삭제")
     @PostMapping("/delete")
-    public CmmResponseEntity<Void> deleteUser(@RequestBody @Validated(DetailGroup.class) UserReqDto userReqDto) {
+    public CmmResponseEntity<Void> deleteUser(@RequestBody @Validated(DetailGroup.class) UserRequest userReqDto) {
         // 사용자 삭제 요청 (Service 호출)
         userService.deleteUser(userReqDto);
 
@@ -115,7 +115,7 @@ public class UserController {
      */
     @Operation(summary = "엑셀 다운로드", description = "엑셀 다운로드")
     @PostMapping("/download/userList")
-    public void downloadUserList(@RequestBody UserListReqDto userListReqDto, HttpServletResponse response) {
+    public void downloadUserList(@RequestBody UserListRequest userListReqDto, HttpServletResponse response) {
         // 엑셀 다운로드 요청 (Service 호출)
         userService.downloadUserList(userListReqDto, response);
     }

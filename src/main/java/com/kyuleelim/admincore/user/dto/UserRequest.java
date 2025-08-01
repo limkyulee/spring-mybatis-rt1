@@ -10,8 +10,8 @@ import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
 @Data
-@Alias("UserReqDto")
-public class UserReqDto {
+@Alias("UserRequest")
+public class UserRequest {
     @NotNull(groups = {UpdateGroup.class, DetailGroup.class})
     private Long userId;
     @NotBlank(groups = {CreateGroup.class, UpdateGroup.class})
