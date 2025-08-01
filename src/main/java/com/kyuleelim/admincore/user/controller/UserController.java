@@ -1,10 +1,13 @@
 package com.kyuleelim.admincore.user.controller;
 
+import static com.kyuleelim.admincore.common.enums.CmmConstant.USER_PROFILE;
+
 import com.kyuleelim.admincore.common.domain.CreateGroup;
 import com.kyuleelim.admincore.common.domain.DetailGroup;
 import com.kyuleelim.admincore.common.domain.UpdateGroup;
 import com.kyuleelim.admincore.common.dto.response.CmmResponse;
 import com.kyuleelim.admincore.common.dto.response.CmmResponseEntity;
+import com.kyuleelim.admincore.common.utils.CommonUtil;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.domain.UserList;
 import com.kyuleelim.admincore.user.dto.UserListRequest;
@@ -64,14 +67,18 @@ public class UserController {
     /**
      * @Method Name createUser
      * @Description 사용자 등록
-     * @param userReqDto
+     * @param userRequest
      * @return 사용자 등록 성공 여부
      */
     @Operation(summary = "사용자관리 등록", description = "사용자관리 등록")
     @PostMapping("/create")
-    public CmmResponseEntity<Void> createUser(@RequestBody @Validated(CreateGroup.class) UserRequest userReqDto) {
+    public CmmResponseEntity<Void> createUser(@RequestBody @Validated(CreateGroup.class) UserRequest userRequest) {
+        // UUID 셋팅
+        String uuid = CommonUtil.generateUuid(USER_PROFILE);
+        userRequest.setUuid(uuid);
+
         // 사용자 등록 요청 (Service 호출)
-        userService.createUser(userReqDto);
+        userService.createUser(userRequest);
 
         return new CmmResponseEntity<>(new CmmResponse<>(), HttpStatus.OK);
     }
@@ -79,14 +86,14 @@ public class UserController {
     /**
      * @Method Name updateUser
      * @Description 사용자 수정
-     * @param userReqDto
+     * @param userRequest
      * @return 사용자 수정 성공 여부
      */
     @Operation(summary = "사용자관리 업데이트", description = "사용자관리 업데이트")
     @PostMapping("/update")
-    public CmmResponseEntity<Void> updateUser(@RequestBody @Validated(UpdateGroup.class) UserRequest userReqDto) {
+    public CmmResponseEntity<Void> updateUser(@RequestBody @Validated(UpdateGroup.class) UserRequest userRequest) {
         // 사용자 수정 요청 (Service 호출)
-        userService.updateUser(userReqDto);
+        userService.updateUser(userRequest);
 
         return new CmmResponseEntity<>(new CmmResponse<>(), HttpStatus.OK);
     }
@@ -94,29 +101,29 @@ public class UserController {
     /**
      * @Method Name deleteUser
      * @Description 사용자 삭제
-     * @param userReqDto
+     * @param userRequest
      * @return 사용자 삭제 성공 여부
      */
     @Operation(summary = "사용자관리 삭제", description = "사용자관리 삭제")
     @PostMapping("/delete")
-    public CmmResponseEntity<Void> deleteUser(@RequestBody @Validated(DetailGroup.class) UserRequest userReqDto) {
+    public CmmResponseEntity<Void> deleteUser(@RequestBody @Validated(DetailGroup.class) UserRequest userRequest) {
         // 사용자 삭제 요청 (Service 호출)
-        userService.deleteUser(userReqDto);
+        userService.deleteUser(userRequest);
 
         return new CmmResponseEntity<>(new CmmResponse<>(), HttpStatus.OK);
     }
 
     /**
      * @Method downloadUserList
-     * @Description 사용자 목록 `엑셀 다운로드
-     * @param userListReqDto
+     * @Description 사용자 목록 엑셀 다운로드
+     * @param userListRequest
      * @param response
      * @return
      */
     @Operation(summary = "엑셀 다운로드", description = "엑셀 다운로드")
     @PostMapping("/download/userList")
-    public void downloadUserList(@RequestBody UserListRequest userListReqDto, HttpServletResponse response) {
+    public void downloadUserList(@RequestBody UserListRequest userListRequest, HttpServletResponse response) {
         // 엑셀 다운로드 요청 (Service 호출)
-        userService.downloadUserList(userListReqDto, response);
+        userService.downloadUserList(userListRequest, response);
     }
 }

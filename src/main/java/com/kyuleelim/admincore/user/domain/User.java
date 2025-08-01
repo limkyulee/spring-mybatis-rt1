@@ -8,7 +8,7 @@ import org.apache.ibatis.type.Alias;
 @Data
 @Alias("User")
 public class User {
-    private UUID uuid;
+    private String uuid;
     private String userId;
     private String userNm;
     private UserStatus userStatus;

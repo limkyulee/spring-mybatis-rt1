@@ -2,6 +2,7 @@ package com.kyuleelim.admincore.user.service.Impl;
 
 import com.kyuleelim.admincore.common.exception.BizException;
 import com.kyuleelim.admincore.common.utils.ExcelUtil;
+import com.kyuleelim.admincore.common.utils.MaskedUtil;
 import com.kyuleelim.admincore.user.domain.User;
 import com.kyuleelim.admincore.user.domain.UserList;
 import com.kyuleelim.admincore.user.dto.UserListRequest;
@@ -41,6 +42,21 @@ public class UserServiceImpl implements UserService {
     public UserList retrieveUserList(UserListRequest userListReqDto) {
         // 사용자 목록 조회 요청 (Dao 호출)
         List<User> list = userMapper.retrieveUserList(userListReqDto);
+        // 사용자 목록 마스킹 처리
+        for (User user : list) {
+            // 사용자 아이디 마스킹 처리
+            if(user.getUserId() != null && !user.getUserId().isEmpty()) {
+                MaskedUtil.maskPersonalInfo("id", user.getUserId());
+            }
+            // 사용자 이름 마스킹 처리
+            if(user.getUserNm() != null && !user.getUserNm().isEmpty()) {
+                MaskedUtil.maskPersonalInfo("name", user.getUserNm());
+            }
+            // 사용자 이메일 마스킹 처리
+            if (user.getEmail() != null && !user.getEmail().isEmpty()) {
+                MaskedUtil.maskPersonalInfo("email", user.getEmail());
+            }
+        }
         // 사용자 목록 셋팅
         UserList userList = new UserList();
         userList.setList(list);
@@ -61,7 +77,6 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public User retrieveUser(UserRequest userReqDto) {
-
         // 사용자 상세 조회 요청 (Dao 호출)
         return userMapper.retrieveUser(userReqDto);
     }
@@ -74,18 +89,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void createUser(UserRequest userReqDto) {
-        // 사용자 이메일 중복 체크 예외 처리
-        if(userMapper.existUserByEmail(userReqDto.getEmail())){
-            throw new BizException("DUPLICATE_EMAIL");
-        }
-
         // 사용자 등록 요청 (Dao 호출)
         int affectedRow = userMapper.createUser(userReqDto);
         // 사용자 등록 실패 예외 처리
         if(affectedRow < 1) {
             throw new BizException("FAIL_ADD", List.of("사용자"));
         }
-
     }
 
     /**
@@ -127,9 +136,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void downloadUserList(UserListRequest userListReqDto, HttpServletResponse response) {
-        // 다운로드할 사용자 데이터 목록 조회 (Dao 호출)
-        List<User> list = userMapper.retrieveAllUserList(userListReqDto);
-        log.info("list {}", list);
+        // 사용자 목록 조회 (Dao 호출)
+        List<User> list = userMapper.retrieveUserListWithoutLimit(userListReqDto);
+
         // 헤더 생성
         Map<String, String> headerMap = Map.of(
                 "userId","아이디",
@@ -137,7 +146,7 @@ public class UserServiceImpl implements UserService {
                 "email","이메일"
         );
 
-        // 엑셀 다운르도 실행
+        // 엑셀 다운로드 실행
         ExcelUtil.downloadExcel(response, "user_list",list, headerMap);
     }
 }

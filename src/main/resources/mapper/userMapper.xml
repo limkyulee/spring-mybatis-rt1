@@ -126,9 +126,9 @@
   <update id="updateUser" parameterType="UserRequest">
     /* userDao.updateUser | 사용자 수정 */
     UPDATE TB_RT_USER
-       SET USER_ID = #{userId}
-         , USER_NM = #{userNm}
+       SET USER_NM = #{userNm}
          , EMAIL = #{email}
+         , USER_STATUS = #{userStatus}
          , UPDATED_AT = CURRENT_TIMESTAMP
      WHERE UUID = #{uuid}
   </update>
