@@ -11,7 +11,7 @@ public class CommonUtil {
 
 
     /**
-     * @Method createUuid
+     * @Method generateUuid
      * @Description UUID 생성
      * @param prefix
      * @return UUID

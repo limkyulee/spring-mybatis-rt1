@@ -113,10 +113,10 @@
          , CREATED_AT
          , UPDATED_AT )
     VALUES
-         ( ${uuid}
+         ( #{uuid}
          , #{userId}
          , #{userNm}
-         , ${userStatus}
+         , #{userStatus}::user_status_enum
          , #{password}
          , #{email}
          , CURRENT_TIMESTAMP
@@ -128,7 +128,7 @@
     UPDATE TB_RT_USER
        SET USER_NM = #{userNm}
          , EMAIL = #{email}
-         , USER_STATUS = #{userStatus}
+         , USER_STATUS = #{userStatus}::user_status_enum
          , UPDATED_AT = CURRENT_TIMESTAMP
      WHERE UUID = #{uuid}
   </update>

@@ -6,9 +6,8 @@ Spring Boot REST API | Mybatis
 - Java 21
 - Spring Boot 3.1.x
 - MyBatis
-- MySQL
+- Neon - Postgresql
 - Gradle
-- Lombok
 
 ### Contents
 
@@ -18,5 +17,6 @@ Spring Boot REST API | Mybatis
 - [X] BizException
 - [X] Swagger.io
 - [ ] WebSocket
-- [ ] Redis Template
+- [ ] Redis
+- [ ] RestClient | RestTemplate
 
